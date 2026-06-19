@@ -55,16 +55,16 @@ const Banner = () => {
 
                 <motion.div className="flex-1">
                     <div className="relative">
-                        <div className="absolute -inset-4 bg-gradient-to-tr from-teal-100 to-cyan-100 rounded-[35px] blur-xl"></div>
+                        
                         <div className="relative bg-white border border-slate-100 p-2 rounded-[32px] shadow-2xl">
                             <img
-                                src="/assests/Banner.png"
+                                src="https://static.vecteezy.com/system/resources/thumbnails/015/127/716/small_2x/team-of-doctors-are-standing-in-emergency-room-multi-ethnic-surgeons-are-working-at-operating-room-at-hospital-they-are-wearing-blue-scrubs-photo.jpg"
                                 alt="Doctor consultation"
-                                className="w-full h-[450px] object-cover rounded-3xl"
+                                className="w-full h-[500px] object-cover rounded-3xl"
                             />
                         </div>
 
-                        {/* Floating Card */}
+                      
                         <div className="absolute -bottom-6 -left-6 bg-white border border-teal-100 rounded-2xl px-6 py-4 shadow-xl">
                             <h4 className="text-slate-900 font-bold text-lg">24/7 Support</h4>
                             <p className="text-teal-600 text-sm">Instant assistance</p>
