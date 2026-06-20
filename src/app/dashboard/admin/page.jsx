@@ -222,16 +222,17 @@ export default function AdminDashboard() {
         </div>
 
         <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm">
-          <div className="flex border-b border-slate-100 pb-4 mb-6 gap-6">
+          <div className="flex border-b border-slate-100 pb-4 mb-6 gap-6 overflow-x-auto scrollbar-none">
             {[
               { id: "verify", label: "Verify Doctors" },
               { id: "users", label: "Manage Users" },
+              { id: "appointments", label: "Monitor Appointments" },
               { id: "payments", label: "Payments Monitor" }
             ].map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`pb-2.5 font-bold text-sm tracking-wide transition cursor-pointer relative ${
+                className={`pb-2.5 font-bold text-sm tracking-wide transition cursor-pointer relative whitespace-nowrap ${
                   activeTab === tab.id ? "text-teal-500" : "text-slate-400 hover:text-slate-600"
                 }`}
               >
@@ -252,58 +253,65 @@ export default function AdminDashboard() {
               {activeTab === "verify" && (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
-                    <div>
-                      <ul className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                    <thead>
+                      <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
                         <th className="py-4">Doctor</th>
                         <th className="py-4">Specialization</th>
                         <th className="py-4">Hospital</th>
                         <th className="py-4">Fee</th>
                         <th className="py-4">Status</th>
                         <th className="py-4 text-right">Action</th>
-                      </ul>
-                    </div>
+                      </tr>
+                    </thead>
                     <tbody className="divide-y divide-slate-50 text-slate-700 text-sm">
                       {doctors.length === 0 ? (
-                        <ul>
+                        <tr>
                           <td colSpan={6} className="py-8 text-center text-slate-400 italic">No doctors configured in DB yet.</td>
-                        </ul>
+                        </tr>
                       ) : (
-                        doctors.map((doc) => (
-                          <tr key={doc._id} className="hover:bg-slate-50/50 transition">
-                            <td className="py-4 flex items-center gap-3">
-                              <Avatar className="w-10 h-10 border border-slate-100">
-                                <Avatar.Image src={doc.image} alt={doc.name} />
-                                <Avatar.Fallback className="bg-teal-500 text-white font-bold">{doc.name?.[0]}</Avatar.Fallback>
-                              </Avatar>
-                              <div>
-                                <div className="font-bold text-slate-800">{doc.name}</div>
-                                <div className="text-xs text-slate-400">{doc.email}</div>
-                              </div>
-                            </td>
-                            <td className="py-4 text-teal-600 font-semibold">{doc.specialization || "Unset"}</td>
-                            <td className="py-4">{doc.hospital || "Unset"}</td>
-                            <td className="py-4 font-bold">{doc.fee} BDT</td>
-                            <td className="py-4">
-                              <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
-                                doc.verified ? "bg-teal-50 text-teal-700 border border-teal-100" : "bg-amber-50 text-amber-700 border border-amber-100"
-                              }`}>
-                                {doc.verified ? "Verified" : "Pending"}
-                              </span>
-                            </td>
-                            <td className="py-4 text-right">
-                              <button
-                                onClick={() => handleVerifyDoctor(doc._id, doc.verified)}
-                                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all shadow cursor-pointer ${
-                                  doc.verified
-                                    ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 shadow-sm"
-                                    : "bg-teal-500 hover:bg-teal-600 text-white shadow-teal-500/10"
-                                }`}
-                              >
-                                {doc.verified ? "Unverify" : "Verify"}
-                              </button>
-                            </td>
-                          </tr>
-                        ))
+                        doctors.map((doc) => {
+                          const isVerified = doc.verified || doc.verificationStatus === "verified" || doc.verificationStatus === true;
+                          const docName = doc.doctorName || doc.name || "Doctor";
+                          const docImage = doc.profileImage || doc.image;
+                          const docHospital = doc.hospitalName || doc.hospital || "Unset";
+                          const docFee = doc.consultationFee || doc.fee || 0;
+                          return (
+                            <tr key={doc._id} className="hover:bg-slate-50/50 transition">
+                              <td className="py-4 flex items-center gap-3">
+                                <Avatar className="w-10 h-10 border border-slate-100">
+                                  <Avatar.Image src={docImage} alt={docName} />
+                                  <Avatar.Fallback className="bg-teal-500 text-white font-bold">{docName?.[0]}</Avatar.Fallback>
+                                </Avatar>
+                                <div>
+                                  <div className="font-bold text-slate-800">{docName}</div>
+                                  <div className="text-xs text-slate-400">{doc.email}</div>
+                                </div>
+                              </td>
+                              <td className="py-4 text-teal-600 font-semibold">{doc.specialization || "Unset"}</td>
+                              <td className="py-4">{docHospital}</td>
+                              <td className="py-4 font-bold">{docFee} BDT</td>
+                              <td className="py-4">
+                                <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
+                                  isVerified ? "bg-teal-50 text-teal-700 border border-teal-100" : "bg-amber-50 text-amber-700 border border-amber-100"
+                                }`}>
+                                  {isVerified ? "Verified" : "Pending"}
+                                </span>
+                              </td>
+                              <td className="py-4 text-right">
+                                <button
+                                  onClick={() => handleVerifyDoctor(doc._id, isVerified)}
+                                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all shadow cursor-pointer ${
+                                    isVerified
+                                      ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 shadow-sm"
+                                      : "bg-teal-500 hover:bg-teal-600 text-white shadow-teal-500/10"
+                                  }`}
+                                >
+                                  {isVerified ? "Unverify" : "Verify"}
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
                       )}
                     </tbody>
                   </table>
@@ -322,47 +330,115 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50 text-slate-700 text-sm">
-                      {users.map((usr) => (
-                        <tr key={usr.id || usr._id} className="hover:bg-slate-50/50 transition">
-                          <td className="py-4 flex items-center gap-3">
-                            <Avatar className="w-10 h-10 border border-slate-100">
-                              <Avatar.Image src={usr.image} alt={usr.name} />
-                              <Avatar.Fallback className="bg-slate-500 text-white font-bold">{usr.name?.[0]}</Avatar.Fallback>
-                            </Avatar>
-                            <div className="font-bold text-slate-800">{usr.name}</div>
-                          </td>
-                          <td className="py-4">{usr.email}</td>
-                          <td className="py-4">
-                            <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
-                              usr.role === "admin" ? "bg-red-50 text-red-700 border border-red-100" :
-                              usr.role === "doctor" ? "bg-teal-50 text-teal-700 border border-teal-100" :
-                              "bg-blue-50 text-blue-700 border border-blue-100"
-                            }`}>
-                              {usr.role || "patient"}
-                            </span>
-                          </td>
-                          <td className="py-4">
-                            <select
-                              value={usr.role || "patient"}
-                              onChange={(e) => handleUpdateUserRole(usr.id || usr._id, e.target.value)}
-                              className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 font-semibold focus:outline-none"
-                            >
-                              <option value="patient">Patient</option>
-                              <option value="doctor">Doctor</option>
-                              <option value="admin">Admin</option>
-                            </select>
-                          </td>
-                          <td className="py-4 text-right">
-                            <button
-                              onClick={() => handleDeleteUser(usr.id || usr._id)}
-                              className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition cursor-pointer"
-                              title="Delete User"
-                            >
-                              <FaTrash />
-                            </button>
-                          </td>
+                      {users.map((usr) => {
+                        const userName = usr.name || "User";
+                        const userImage = usr.photo || usr.image;
+                        return (
+                          <tr key={usr.id || usr._id} className="hover:bg-slate-50/50 transition">
+                            <td className="py-4 flex items-center gap-3">
+                              <Avatar className="w-10 h-10 border border-slate-100">
+                                <Avatar.Image src={userImage} alt={userName} />
+                                <Avatar.Fallback className="bg-slate-500 text-white font-bold">{userName?.[0]}</Avatar.Fallback>
+                              </Avatar>
+                              <div className="font-bold text-slate-800">{userName}</div>
+                            </td>
+                            <td className="py-4">{usr.email}</td>
+                            <td className="py-4">
+                              <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
+                                usr.role === "admin" ? "bg-red-50 text-red-700 border border-red-100" :
+                                usr.role === "doctor" ? "bg-teal-50 text-teal-700 border border-teal-100" :
+                                "bg-blue-50 text-blue-700 border border-blue-100"
+                              }`}>
+                                {usr.role || "patient"}
+                              </span>
+                            </td>
+                            <td className="py-4">
+                              <select
+                                value={usr.role || "patient"}
+                                onChange={(e) => handleUpdateUserRole(usr.id || usr._id, e.target.value)}
+                                className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 font-semibold focus:outline-none"
+                              >
+                                <option value="patient">Patient</option>
+                                <option value="doctor">Doctor</option>
+                                <option value="admin">Admin</option>
+                              </select>
+                            </td>
+                            <td className="py-4 text-right">
+                              <button
+                                onClick={() => handleDeleteUser(usr.id || usr._id)}
+                                className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition cursor-pointer"
+                                title="Delete User"
+                              >
+                                <FaTrash />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {activeTab === "appointments" && (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                        <th className="py-4">Patient</th>
+                        <th className="py-4">Doctor</th>
+                        <th className="py-4">Date & Time</th>
+                        <th className="py-4">Fee</th>
+                        <th className="py-4">Status</th>
+                        <th className="py-4">Payment</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50 text-slate-700 text-sm">
+                      {appointments.length === 0 ? (
+                        <tr>
+                          <td colSpan={6} className="py-8 text-center text-slate-400 italic">No appointments booked yet.</td>
                         </tr>
-                      ))}
+                      ) : (
+                        appointments.map((appt) => {
+                          const apptDate = appt.appointmentDate || appt.date;
+                          const apptTime = appt.appointmentTime || appt.timeSlot;
+                          const apptStatus = appt.appointmentStatus || appt.status || "pending";
+                          const apptFee = appt.fee || appt.amount || 0;
+                          return (
+                            <tr key={appt._id} className="hover:bg-slate-50/50 transition">
+                              <td className="py-4">
+                                <div className="font-bold text-slate-800">{appt.patientName}</div>
+                                <div className="text-xs text-slate-400">{appt.patientEmail}</div>
+                              </td>
+                              <td className="py-4">
+                                <div className="font-semibold text-slate-700">{appt.doctorName}</div>
+                                <div className="text-xs text-slate-400">{appt.doctorSpecialization}</div>
+                              </td>
+                              <td className="py-4 text-slate-600">
+                                <div>{apptDate ? new Date(apptDate).toLocaleDateString() : "Unset"}</div>
+                                <div className="text-xs text-slate-400">{apptTime}</div>
+                              </td>
+                              <td className="py-4 font-bold">{apptFee} BDT</td>
+                              <td className="py-4">
+                                <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
+                                  apptStatus === "approved" || apptStatus === "accepted" ? "bg-teal-50 text-teal-700 border border-teal-100" :
+                                  apptStatus === "completed" ? "bg-blue-50 text-blue-700 border border-blue-100" :
+                                  apptStatus === "rejected" || apptStatus === "cancelled" ? "bg-rose-50 text-rose-700 border border-rose-100" :
+                                  "bg-amber-50 text-amber-700 border border-amber-100"
+                                }`}>
+                                  {apptStatus}
+                                </span>
+                              </td>
+                              <td className="py-4">
+                                <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
+                                  appt.paymentStatus === "paid" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-slate-50 text-slate-600 border border-slate-200"
+                                }`}>
+                                  {appt.paymentStatus}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -385,17 +461,21 @@ export default function AdminDashboard() {
                           <td colSpan={5} className="py-8 text-center text-slate-400 italic">No paid transactions logged yet.</td>
                         </tr>
                       ) : (
-                        appointments.filter(appt => appt.paymentStatus === "paid").map((appt) => (
-                          <tr key={appt._id} className="hover:bg-slate-50/50 transition">
-                            <td className="py-4 font-mono text-xs font-bold text-teal-600">{appt.transactionId}</td>
-                            <td className="py-4 font-semibold text-slate-800">{appt.patientName}</td>
-                            <td className="py-4 text-slate-700">{appt.doctorName}</td>
-                            <td className="py-4 font-black">{appt.fee} BDT</td>
-                            <td className="py-4 text-slate-500">
-                              {appt.paidAt ? new Date(appt.paidAt).toLocaleDateString() : new Date(appt.createdAt).toLocaleDateString()}
-                            </td>
-                          </tr>
-                        ))
+                        appointments.filter(appt => appt.paymentStatus === "paid").map((appt) => {
+                          const apptFee = appt.fee || appt.amount || 0;
+                          const payDate = appt.paidAt || appt.paymentDate || appt.createdAt;
+                          return (
+                            <tr key={appt._id} className="hover:bg-slate-50/50 transition">
+                              <td className="py-4 font-mono text-xs font-bold text-teal-600">{appt.transactionId}</td>
+                              <td className="py-4 font-semibold text-slate-800">{appt.patientName}</td>
+                              <td className="py-4 text-slate-700">{appt.doctorName}</td>
+                              <td className="py-4 font-black">{apptFee} BDT</td>
+                              <td className="py-4 text-slate-500">
+                                {payDate ? new Date(payDate).toLocaleDateString() : "Unset"}
+                              </td>
+                            </tr>
+                          );
+                        })
                       )}
                     </tbody>
                   </table>
