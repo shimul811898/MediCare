@@ -27,11 +27,12 @@ export default function RegisterPage() {
         password: data.password,
         name: data.name,
         image: data.photo,
+        role: data.email === "shimul811898@gmail.com" ? "admin" : data.role,
         callbackURL: "/dashboard",
       });
 
       if (res?.error) {
-        toast.error(res.error.message || "Registration failed.", { id: toastId });
+        toast.error("Registration failed.", { id: toastId });
       } else {
         toast.success("Account created successfully!", { id: toastId });
         router.push("/");
@@ -84,14 +85,35 @@ export default function RegisterPage() {
             </div>
 
             <div>
+              <label className="text-sm text-slate-300 block mb-2">Register As</label>
+              <div className="grid grid-cols-2 gap-4">
+                <label className="flex items-center justify-center gap-2 p-3.5 rounded-xl border border-white/10 bg-white/5 text-white cursor-pointer hover:border-teal-400 transition-all select-none">
+                  <input
+                    type="radio"
+                    value="patient"
+                    defaultChecked
+                    {...register("role")}
+                    className="accent-teal-500 w-4 h-4 cursor-pointer"
+                  />
+                  <span className="font-medium">Patient</span>
+                </label>
+                <label className="flex items-center justify-center gap-2 p-3.5 rounded-xl border border-white/10 bg-white/5 text-white cursor-pointer hover:border-teal-400 transition-all select-none">
+                  <input
+                    type="radio"
+                    value="doctor"
+                    {...register("role")}
+                    className="accent-teal-500 w-4 h-4 cursor-pointer"
+                  />
+                  <span className="font-medium">Doctor</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
               <label className="text-sm text-slate-300">Email Address</label>
               <input
                 {...register("email", { 
                   required: "Email is required",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
-                    message: "Invalid email address"
-                  }
                 })}
                 type="email"
                 placeholder="Enter your email"

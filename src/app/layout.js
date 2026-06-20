@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "DocAppoint - Doctor Appointment & Care Platform",
-  description: "Connect with experienced doctors, schedule appointments",
+  title: "MediCare",
+  description: "MediCare Connect – Hospital Appointment & Healthcare Management System",
 };
 
 export default function RootLayout({ children }) {

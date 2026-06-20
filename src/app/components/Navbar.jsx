@@ -35,7 +35,7 @@ const Navbar = () => {
             />
           </div>
           <h2 className="text-3xl font-black tracking-tight text-slate-900">
-            Doc<span className="bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent">Appoint</span>
+            Medi<span className="bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent">Care</span>
           </h2>
         </Link>
 
