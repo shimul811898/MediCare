@@ -33,11 +33,8 @@ export default function FindDoctorsPage() {
   const [bookingTime, setBookingTime] = useState("");
   const [bookingLoading, setBookingLoading] = useState(false);
 
-  useEffect(() => {
-    fetchDoctors();
-  }, [specialization]);
-
   const fetchDoctors = async () => {
+    try {
       setLoading(true);
       const specQuery = specialization !== "All" ? `specialization=${specialization}` : "";
       const searchQuery = search ? `search=${search}` : "";
@@ -47,7 +44,17 @@ export default function FindDoctorsPage() {
       if (!response.ok) throw new Error("Failed to fetch doctors");
       const data = await response.json();
       setDoctors(data);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to fetch doctors list.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchDoctors();
+  }, [specialization]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -65,7 +72,6 @@ export default function FindDoctorsPage() {
       return;
     }
     setSelectedDoctor(doctor);
-  
     setBookingDate("");
     setBookingTime("");
   };
@@ -75,12 +81,11 @@ export default function FindDoctorsPage() {
       toast.error("Please select both a date and a time slot.");
       return;
     }
+    try {
       setBookingLoading(true);
       const response = await fetch("http://localhost:5000/api/appointments", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           patientId: user.id,
           patientName: user.name,
@@ -94,22 +99,25 @@ export default function FindDoctorsPage() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to book appointment");
-      }
+      if (!response.ok) throw new Error("Failed to book appointment");
 
       toast.success("Appointment booked successfully! Proceed to dashboard to view status.");
       setSelectedDoctor(null);
       router.push("/dashboard");
+    } catch (err) {
+      console.error(err);
+      toast.error("Error booking appointment. Please try again.");
+    } finally {
+      setBookingLoading(false);
+    }
   };
-
 
   const getAvailableSlotsForDate = (dateStr) => {
     if (!dateStr || !selectedDoctor) return [];
     const dateObj = new Date(dateStr);
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const selectedDayName = dayNames[dateObj.getDay()];
-    
+
     const scheduleForDay = selectedDoctor.schedules?.find(
       (s) => s.day.toLowerCase() === selectedDayName.toLowerCase()
     );
@@ -133,7 +141,6 @@ export default function FindDoctorsPage() {
           </p>
         </div>
 
-
         <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm mb-10">
           <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
@@ -156,7 +163,6 @@ export default function FindDoctorsPage() {
             </button>
           </form>
 
-       
           <div className="mt-6">
             <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Specializations</h4>
             <div className="flex flex-wrap gap-2">
@@ -177,7 +183,6 @@ export default function FindDoctorsPage() {
           </div>
         </div>
 
-     
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <Spinner size="lg" color="teal" />
@@ -225,14 +230,12 @@ export default function FindDoctorsPage() {
                     </div>
                   </div>
 
-        
                   {doctor.bio && (
                     <p className="text-slate-600 text-sm line-clamp-2 mb-4 bg-slate-50 p-3 rounded-xl">
                       {doctor.bio}
                     </p>
                   )}
 
-                
                   <div className="flex items-center justify-between border-y border-slate-100 py-3 mb-5 text-sm">
                     <div className="flex items-center gap-1 text-slate-700">
                       <FaStar className="text-amber-500" />
@@ -245,7 +248,6 @@ export default function FindDoctorsPage() {
                     </div>
                   </div>
 
-              
                   {doctor.schedules && doctor.schedules.length > 0 ? (
                     <div className="mb-6">
                       <h5 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Available Days</h5>
@@ -316,7 +318,7 @@ export default function FindDoctorsPage() {
                   value={bookingDate}
                   onChange={(e) => {
                     setBookingDate(e.target.value);
-                    setBookingTime(""); 
+                    setBookingTime("");
                   }}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all"
                 />
