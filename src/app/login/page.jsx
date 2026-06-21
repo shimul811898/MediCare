@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 const LoginPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -72,6 +73,31 @@ const LoginPage = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
+              <label className="text-sm text-slate-300 block mb-2">Login As</label>
+              <div className="grid grid-cols-2 gap-4">
+                <label className="flex items-center justify-center gap-2 p-3.5 rounded-xl border border-white/10 bg-white/5 text-white cursor-pointer hover:border-teal-400 transition-all select-none">
+                  <input
+                    type="radio"
+                    value="patient"
+                    defaultChecked
+                    {...register("role")}
+                    className="accent-teal-500 w-4 h-4 cursor-pointer"
+                  />
+                  <span className="font-medium">Patient</span>
+                </label>
+                <label className="flex items-center justify-center gap-2 p-3.5 rounded-xl border border-white/10 bg-white/5 text-white cursor-pointer hover:border-teal-400 transition-all select-none">
+                  <input
+                    type="radio"
+                    value="doctor"
+                    {...register("role")}
+                    className="accent-teal-500 w-4 h-4 cursor-pointer"
+                  />
+                  <span className="font-medium">Doctor</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
               <label className="text-sm text-slate-300">Email Address</label>
               <input
                 {...register("email", { 
@@ -86,12 +112,21 @@ const LoginPage = () => {
 
             <div>
               <label className="text-sm text-slate-300">Password</label>
-              <input
-                {...register("password", { required: "Password is required" })}
-                type="password"
-                placeholder="Enter your password"
-                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-slate-400 outline-none focus:border-teal-400"
-              />
+              <div className="relative">
+                <input
+                  {...register("password", { required: "Password is required" })}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  className="w-full mt-2 px-4 py-3 pr-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-slate-400 outline-none focus:border-teal-400"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-[57%] -translate-y-1/2 text-slate-400 hover:text-slate-200 focus:outline-none"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
               {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>}
             </div>
 

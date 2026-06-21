@@ -322,29 +322,29 @@ export default function DoctorDashboard() {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
-                    <div>
-                      <ul className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
-                        <li className="py-4">Patient Info</li>
-                        <li className="py-4">Date & Slot</li>
-                        <li className="py-4">Fee</li>
-                        <li className="py-4">Status</li>
-                        <li className="py-4">Payment</li>
-                        <li className="py-4 text-right">Actions</li>
-                      </ul>
-                    </div>
-                    <ul className="divide-y divide-slate-50 text-slate-700 text-sm">
+                    <thead>
+                      <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                        <th className="py-4 font-bold">Patient Info</th>
+                        <th className="py-4 font-bold">Date & Slot</th>
+                        <th className="py-4 font-bold">Fee</th>
+                        <th className="py-4 font-bold">Status</th>
+                        <th className="py-4 font-bold">Payment</th>
+                        <th className="py-4 font-bold text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50 text-slate-700 text-sm">
                       {appointments.map((appt) => (
                         <tr key={appt._id} className="hover:bg-slate-50/50 transition">
-                          <li className="py-4">
+                          <td className="py-4">
                             <div className="font-bold text-slate-800">{appt.patientName}</div>
                             <div className="text-xs text-slate-400">{appt.patientEmail}</div>
-                          </li>
-                          <li className="py-4 font-medium">
+                          </td>
+                          <td className="py-4 font-medium">
                             <div>{appt.date}</div>
                             <div className="text-xs text-slate-500">{appt.timeSlot}</div>
-                          </li>
-                          <li className="py-4 font-bold">{appt.fee} BDT</li>
-                          <li className="py-4">
+                          </td>
+                          <td className="py-4 font-bold">{appt.fee} BDT</td>
+                          <td className="py-4">
                             <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
                               appt.status === "approved" ? "bg-teal-50 text-teal-700 border border-teal-100" :
                               appt.status === "completed" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" :
@@ -353,15 +353,15 @@ export default function DoctorDashboard() {
                             }`}>
                               {appt.status}
                             </span>
-                          </li>
-                          <li className="py-4">
+                          </td>
+                          <td className="py-4">
                             <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
                               appt.paymentStatus === "paid" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-amber-50 text-amber-700 border border-amber-100"
                             }`}>
                               {appt.paymentStatus}
                             </span>
-                          </li>
-                          <li className="py-4 text-right space-x-2">
+                          </td>
+                          <td className="py-4 text-right space-x-2">
                             {appt.status === "pending" && (
                               <>
                                 <button
@@ -397,10 +397,10 @@ export default function DoctorDashboard() {
                             {appt.status === "rejected" && (
                               <span className="text-rose-500 text-xs italic">Declined</span>
                             )}
-                          </li>
+                          </td>
                         </tr>
                       ))}
-                    </ul>
+                    </tbody>
                   </table>
                 </div>
               )}

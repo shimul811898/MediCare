@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -47,15 +48,11 @@ export default function RegisterPage() {
 
   const handleGoogleSignIn = async () => {
     const toastId = toast.loading("Connecting with Google...");
-    try {
       await authClient.signIn.social({
         provider: "google",
         callbackURL: "/dashboard",
       });
-      toast.dismiss(toastId);
-    } catch (error) {
-      toast.error(error.message || "Failed to log in with Google", { id: toastId });
-    }
+      toast.dismiss(toastId)
   };
 
   return (
@@ -135,15 +132,24 @@ export default function RegisterPage() {
 
             <div>
               <label className="text-sm text-slate-300">Password</label>
-              <input
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: { value: 6, message: "Minimum 6 characters" }
-                })}
-                type="password"
-                placeholder="Create password"
-                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400"
-              />
+              <div className="relative">
+                <input
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: { value: 6, message: "Minimum 6 characters" }
+                  })}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Create password"
+                  className="w-full mt-2 px-4 py-3 pr-12 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-[57%] -translate-y-1/2 text-slate-400 hover:text-slate-200 focus:outline-none"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
               {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>}
             </div>
 

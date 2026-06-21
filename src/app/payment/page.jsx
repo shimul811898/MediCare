@@ -25,14 +25,12 @@ function PaymentContent() {
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCVC, setCardCVC] = useState("");
 
-  // Route Guard
   useEffect(() => {
     if (!isPending && !user) {
       router.push("/login");
     }
   }, [user, isPending, router]);
 
-  // Fetch Appointment Details
   useEffect(() => {
     if (appointmentId) {
       const fetchAppt = async () => {
@@ -151,7 +149,6 @@ function PaymentContent() {
     <div className="flex-1 bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen py-16 px-6">
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Checkout Summary */}
         <div className="lg:col-span-5 bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-6">
           <div>
             <span className="inline-block px-3 py-1 rounded-full bg-teal-50 border border-teal-100 text-teal-600 text-[10px] font-black uppercase tracking-wider mb-2">
@@ -198,7 +195,7 @@ function PaymentContent() {
           </div>
         </div>
 
-        {/* Stripe Payment Form */}
+        
         <div className="lg:col-span-7 bg-white border border-slate-100 rounded-3xl p-8 shadow-sm space-y-6">
           <div className="flex justify-between items-center">
             <div>

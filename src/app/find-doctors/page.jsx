@@ -5,7 +5,7 @@ import { Spinner, Avatar } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { FaSearch, FaStethoscope, FaHospital, FaDollarSign, FaCalendarAlt, FaClock, FaStar, FaChevronRight } from "react-icons/fa";
+import { FaSearch, FaStethoscope, FaHospital, FaDollarSign, FaCalendarAlt, FaClock, FaStar, FaChevronRight, FaUserMd } from "react-icons/fa";
 
 const SPECIALIZATIONS = [
   "All",
@@ -69,7 +69,11 @@ export default function FindDoctorsPage() {
       return;
     }
     if (user.role === "doctor") {
-      toast.error("Doctors cannot book appointments.");
+      toast.error("Doctors cannot book appointments. Only patients can.");
+      return;
+    }
+    if (user.role === "admin") {
+      toast.error("Admins cannot book appointments. Only patients can.");
       return;
     }
     setSelectedDoctor(doctor);
@@ -78,6 +82,10 @@ export default function FindDoctorsPage() {
   };
 
   const handleBookAppointment = async () => {
+    if (!user || user.role !== "patient") {
+      toast.error("Only patients can book appointments.");
+      return;
+    }
     if (!bookingDate || !bookingTime) {
       toast.error("Please select both a date and a time slot.");
       return;

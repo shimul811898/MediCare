@@ -147,29 +147,29 @@ export default function PatientDashboard() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
-                <div>
-                  <ul className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
-                    <li className="py-4">Doctor Name</li>
-                    <li className="py-4">Specialization</li>
-                    <li className="py-4">Date & Time</li>
-                    <li className="py-4">Fee</li>
-                    <li className="py-4">Status</li>
-                    <li className="py-4">Payment</li>
-                    <li className="py-4 text-right">Actions</li>
-                  </ul>
-                </div>
-                <div className="divide-y divide-slate-50 text-slate-700 text-sm">
+                <thead>
+                  <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                    <th className="py-4 font-bold">Doctor Name</th>
+                    <th className="py-4 font-bold">Specialization</th>
+                    <th className="py-4 font-bold">Date & Time</th>
+                    <th className="py-4 font-bold">Fee</th>
+                    <th className="py-4 font-bold">Status</th>
+                    <th className="py-4 font-bold">Payment</th>
+                    <th className="py-4 font-bold text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-50 text-slate-700 text-sm">
                   {appointments.map((appt) => (
-                    <ul key={appt._id} className="hover:bg-slate-50/50 transition">
-                      <li className="py-4 font-bold text-slate-800">{appt.doctorName}</li>
-                      <li className="py-4 text-teal-600 font-semibold">{appt.doctorSpecialization}</li>
-                      <li className="py-4">
+                    <tr key={appt._id} className="hover:bg-slate-50/50 transition">
+                      <td className="py-4 font-bold text-slate-800">{appt.doctorName}</td>
+                      <td className="py-4 text-teal-600 font-semibold">{appt.doctorSpecialization}</td>
+                      <td className="py-4">
                         <div className="flex items-center gap-1.5 text-slate-800 font-medium">
                           <FaClock className="text-slate-400 text-xs" /> {appt.date} ({appt.timeSlot})
                         </div>
-                      </li>
-                      <li className="py-4 font-bold">{appt.fee} BDT</li>
-                      <li className="py-4">
+                      </td>
+                      <td className="py-4 font-bold">{appt.fee} BDT</td>
+                      <td className="py-4">
                         <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
                           appt.status === "approved" ? "bg-teal-50 text-teal-700 border border-teal-100" :
                           appt.status === "completed" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" :
@@ -178,15 +178,15 @@ export default function PatientDashboard() {
                         }`}>
                           {appt.status}
                         </span>
-                      </li>
-                      <li className="py-4">
+                      </td>
+                      <td className="py-4">
                         <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase tracking-wide ${
                           appt.paymentStatus === "paid" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-amber-50 text-amber-700 border border-amber-100"
                         }`}>
                           {appt.paymentStatus}
                         </span>
-                      </li>
-                      <li className="py-4 text-right">
+                      </td>
+                      <td className="py-4 text-right">
                         {appt.paymentStatus === "unpaid" && (
                           <button
                             onClick={() => router.push(`/payment?appointmentId=${appt._id}`)}
@@ -209,10 +209,10 @@ export default function PatientDashboard() {
                         {appt.status === "rejected" && (
                           <span className="text-rose-400 text-xs italic">Declined by doctor</span>
                         )}
-                      </li>
-                    </ul>
+                      </td>
+                    </tr>
                   ))}
-                </div>
+                </tbody>
               </table>
             </div>
           )}
