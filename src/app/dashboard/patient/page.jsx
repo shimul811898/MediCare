@@ -18,11 +18,7 @@ export default function PatientDashboard() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [payingAppointment, setPayingAppointment] = useState(null);
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [cardCVC, setCardCVC] = useState("");
-  const [payLoading, setPayLoading] = useState(false);
+
 
   const [reviewingAppointment, setReviewingAppointment] = useState(null);
   const [rating, setRating] = useState(5);
@@ -61,26 +57,7 @@ export default function PatientDashboard() {
     }
   };
 
-  const handlePaySubmit = async (e) => {
-    e.preventDefault();
-    if (!cardNumber || !cardExpiry || !cardCVC) {
-      toast.error("Please fill in card details");
-      return;
-    }
 
-   
-      setPayLoading(true);
-      const res = await fetch(`http://localhost:5000/api/appointments/${payingAppointment._id}/pay`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transactionId: `TXN-MOCK-${Date.now()}` }),
-      });
-
-      if (!res.ok) throw new Error("Payment failed");
-      toast.success("Payment successful!");
-      setPayingAppointment(null);
-      fetchAppointments();
-  };
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -210,9 +187,9 @@ export default function PatientDashboard() {
                         </span>
                       </li>
                       <li className="py-4 text-right">
-                        {appt.status === "approved" && appt.paymentStatus === "unpaid" && (
+                        {appt.paymentStatus === "unpaid" && (
                           <button
-                            onClick={() => setPayingAppointment(appt)}
+                            onClick={() => router.push(`/payment?appointmentId=${appt._id}`)}
                             className="px-3 py-1.5 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white text-xs font-bold rounded-lg transition-all shadow shadow-teal-500/10 cursor-pointer"
                           >
                             Pay Fee
@@ -242,75 +219,6 @@ export default function PatientDashboard() {
         </div>
       </div>
 
-      {payingAppointment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white border border-slate-100 rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-6 text-white flex justify-between items-center">
-              <div>
-                <h3 className="font-black text-xl flex items-center gap-2">
-                  <FaFileInvoiceDollar /> Secure Checkout
-                </h3>
-                <p className="text-teal-50 text-sm mt-0.5">Paying consulting fee for {payingAppointment.doctorName}</p>
-              </div>
-              <button
-                onClick={() => setPayingAppointment(null)}
-                className="text-white/80 hover:text-white text-2xl font-bold bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all"
-              >
-                &times;
-              </button>
-            </div>
-
-            <form onSubmit={handlePaySubmit} className="p-6 space-y-4">
-              <div className="bg-slate-50 p-4 rounded-xl mb-4 flex justify-between">
-                <span className="text-slate-500 text-sm font-semibold">Total Fee:</span>
-                <span className="text-slate-800 font-bold">{payingAppointment.fee} BDT</span>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Card Number</label>
-                <input
-                  type="text"
-                  placeholder="4242 •••• •••• 4242"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
-                  className="w-full mt-1.5 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all text-sm"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Expiration Date</label>
-                  <input
-                    type="text"
-                    placeholder="MM/YY"
-                    value={cardExpiry}
-                    onChange={(e) => setCardExpiry(e.target.value)}
-                    className="w-full mt-1.5 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">CVC</label>
-                  <input
-                    type="text"
-                    placeholder="123"
-                    value={cardCVC}
-                    onChange={(e) => setCardCVC(e.target.value)}
-                    className="w-full mt-1.5 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all text-sm"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={payLoading}
-                className="w-full py-3.5 mt-4 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-xl shadow-lg shadow-teal-500/10 transition cursor-pointer disabled:opacity-50"
-              >
-                {payLoading ? "Processing..." : `Pay ${payingAppointment.fee} BDT`}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
 
       {reviewingAppointment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">

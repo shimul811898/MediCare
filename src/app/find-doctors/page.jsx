@@ -31,6 +31,7 @@ export default function FindDoctorsPage() {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [bookingDate, setBookingDate] = useState("");
   const [bookingTime, setBookingTime] = useState("");
+  const [symptoms, setSymptoms] = useState("General Consultation");
   const [bookingLoading, setBookingLoading] = useState(false);
 
   const fetchDoctors = async () => {
@@ -96,14 +97,18 @@ export default function FindDoctorsPage() {
           date: bookingDate,
           timeSlot: bookingTime,
           fee: selectedDoctor.fee,
+          symptoms: symptoms,
         }),
       });
 
       if (!response.ok) throw new Error("Failed to book appointment");
 
-      toast.success("Appointment booked successfully! Proceed to dashboard to view status.");
+      const data = await response.json();
+      const appointmentId = data.appointmentId;
+
+      toast.success("Appointment created! Redirecting to secure Stripe checkout...");
       setSelectedDoctor(null);
-      router.push("/dashboard");
+      router.push(`/payment?appointmentId=${appointmentId}`);
     } catch (err) {
       console.error(err);
       toast.error("Error booking appointment. Please try again.");
@@ -122,6 +127,27 @@ export default function FindDoctorsPage() {
       (s) => s.day.toLowerCase() === selectedDayName.toLowerCase()
     );
     return scheduleForDay ? scheduleForDay.timeSlots : [];
+  };
+
+  const getNextAvailableDates = () => {
+    if (!selectedDoctor) return [];
+    const hasSchedule = selectedDoctor.schedules && selectedDoctor.schedules.length > 0;
+    const availableDays = hasSchedule ? selectedDoctor.schedules.map(s => s.day.toLowerCase()) : [];
+    const dates = [];
+    const today = new Date();
+    for (let i = 0; i < 14; i++) {
+      const futureDate = new Date();
+      futureDate.setDate(today.getDate() + i);
+      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const dayName = dayNames[futureDate.getDay()].toLowerCase();
+      if (!hasSchedule || availableDays.includes(dayName)) {
+        dates.push({
+          value: futureDate.toISOString().split("T")[0],
+          label: futureDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })
+        });
+      }
+    }
+    return dates;
   };
 
   const availableSlots = bookingDate ? getAvailableSlotsForDate(bookingDate) : [];
@@ -312,51 +338,62 @@ export default function FindDoctorsPage() {
                 <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
                   <FaCalendarAlt className="text-teal-500" /> Select Appointment Date
                 </label>
-                <input
-                  type="date"
-                  min={new Date().toISOString().split("T")[0]}
+                <select
                   value={bookingDate}
                   onChange={(e) => {
                     setBookingDate(e.target.value);
                     setBookingTime("");
                   }}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all"
-                />
-                {bookingDate && (
-                  <p className="text-xs text-teal-600 font-semibold mt-1">
-                    Day selected: {new Date(bookingDate).toLocaleDateString("en-US", { weekday: 'long' })}
-                  </p>
-                )}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all text-sm font-semibold"
+                >
+                  <option value="">-- Choose a Date --</option>
+                  {getNextAvailableDates().map((d) => (
+                    <option key={d.value} value={d.value}>
+                      {d.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
                   <FaClock className="text-teal-500" /> Select Time Slot
                 </label>
-
-                {!bookingDate ? (
-                  <p className="text-xs text-slate-400 italic">Please select a date first to view available time slots.</p>
-                ) : availableSlots.length === 0 ? (
-                  <div className="p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-xs font-semibold">
-                    This doctor is not scheduled to work on this day. Please pick another date. Available days: {selectedDoctor.schedules?.map(s => s.day).join(", ")}.
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-3 gap-2">
-                    {availableSlots.map((slot) => (
-                      <button
-                        key={slot}
-                        onClick={() => setBookingTime(slot)}
-                        className={`py-2 px-3 border rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          bookingTime === slot
-                            ? "bg-teal-500 border-teal-500 text-white shadow-sm"
-                            : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
-                        }`}
-                      >
-                        {slot}
-                      </button>
-                    ))}
-                  </div>
+                <select
+                  value={bookingTime}
+                  onChange={(e) => setBookingTime(e.target.value)}
+                  disabled={!bookingDate || availableSlots.length === 0}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value="">-- Choose a Time Slot --</option>
+                  {availableSlots.map((slot) => (
+                    <option key={slot} value={slot}>
+                      {slot}
+                    </option>
+                  ))}
+                </select>
+                {bookingDate && availableSlots.length === 0 && (
+                  <p className="text-xs text-rose-500 italic mt-1">This doctor has no available schedules for the selected day.</p>
                 )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                  <FaUserMd className="text-teal-500" /> Patient Problem (Symptoms)
+                </label>
+                <select
+                  value={symptoms}
+                  onChange={(e) => setSymptoms(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all text-sm font-semibold"
+                >
+                  <option value="General Consultation">General Consultation / Routine Checkup</option>
+                  <option value="Fever / Cold / Flu">Fever / Cold / Flu</option>
+                  <option value="Body Pain / Injury">Body Pain / Injury</option>
+                  <option value="Stomach Ache / Digestion Issues">Stomach Ache / Digestion Issues</option>
+                  <option value="Skin Rash / Allergy">Skin Rash / Allergy</option>
+                  <option value="Headache / Migraine">Headache / Migraine</option>
+                  <option value="Other / Chronic Condition">Other / Chronic Condition</option>
+                </select>
               </div>
             </div>
 
