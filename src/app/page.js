@@ -1,4 +1,5 @@
 import Banner from "./components/Banner";
+import FeaturedDoctors from "./components/FeaturedDoctors";
 import Footer from "./components/Footer";
 import WhyChooseUs from "./components/WhyChooseUs ";
 
@@ -8,6 +9,7 @@ export default function Home() {
       <main className="flex-1">
         <Banner />
         <WhyChooseUs />
+        <FeaturedDoctors />
       </main>
       <Footer />
     </div>
