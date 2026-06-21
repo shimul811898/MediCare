@@ -1,17 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  
   const {
     register,
     handleSubmit,
@@ -19,10 +20,10 @@ export default function RegisterPage() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setLoading(false);
+    setLoading(true);
     const toastId = toast.loading("Creating your account...");
+    
     try {
-      setLoading(true);
       const res = await authClient.signUp.email({
         email: data.email,
         password: data.password,
@@ -48,19 +49,20 @@ export default function RegisterPage() {
 
   const handleGoogleSignIn = async () => {
     const toastId = toast.loading("Connecting with Google...");
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/dashboard",
-      });
-      toast.dismiss(toastId)
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/dashboard",
+    });
+    toast.dismiss(toastId);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-teal-950 to-slate-900 flex items-center justify-center px-4 py-12">
-      <div className="absolute top-20 left-20 w-72 h-72 bg-teal-500/20 blur-[120px] rounded-full"></div>
-      <div className="absolute bottom-20 right-20 w-72 h-72 bg-cyan-500/20 blur-[120px] rounded-full"></div>
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Background Blobs */}
+      <div className="absolute top-20 left-20 w-72 h-72 bg-teal-500/20 blur-[120px] rounded-full" />
+      <div className="absolute bottom-20 right-20 w-72 h-72 bg-cyan-500/20 blur-[120px] rounded-full" />
 
-      <div className="relative z-10 w-full max-w-md my-auto">
+      <div className="relative z-10 w-full max-w-md">
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-black text-white">
@@ -70,68 +72,64 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Full Name */}
             <div>
-              <label className="text-sm text-slate-300">Full Name</label>
+              <label className="text-sm text-slate-300 ml-1">Full Name</label>
               <input
                 {...register("name", { required: "Name is required" })}
                 type="text"
                 placeholder="Enter your full name"
-                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400"
+                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400 transition"
               />
-              {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
+              {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name.message}</p>}
             </div>
 
+            {/* Role Selection */}
             <div>
-              <label className="text-sm text-slate-300 block mb-2">Register As</label>
+              <label className="text-sm text-slate-300 block mb-2 ml-1">Register As</label>
               <div className="grid grid-cols-2 gap-4">
-                <label className="flex items-center justify-center gap-2 p-3.5 rounded-xl border border-white/10 bg-white/5 text-white cursor-pointer hover:border-teal-400 transition-all select-none">
-                  <input
-                    type="radio"
-                    value="patient"
-                    defaultChecked
-                    {...register("role")}
-                    className="accent-teal-500 w-4 h-4 cursor-pointer"
-                  />
-                  <span className="font-medium">Patient</span>
-                </label>
-                <label className="flex items-center justify-center gap-2 p-3.5 rounded-xl border border-white/10 bg-white/5 text-white cursor-pointer hover:border-teal-400 transition-all select-none">
-                  <input
-                    type="radio"
-                    value="doctor"
-                    {...register("role")}
-                    className="accent-teal-500 w-4 h-4 cursor-pointer"
-                  />
-                  <span className="font-medium">Doctor</span>
-                </label>
+                {["patient", "doctor"].map((role) => (
+                  <label key={role} className="flex items-center justify-center gap-2 p-3.5 rounded-xl border border-white/10 bg-white/5 text-white cursor-pointer hover:border-teal-400 transition select-none">
+                    <input
+                      type="radio"
+                      value={role}
+                      defaultChecked={role === "patient"}
+                      {...register("role")}
+                      className="accent-teal-500 w-4 h-4 cursor-pointer"
+                    />
+                    <span className="font-medium capitalize">{role}</span>
+                  </label>
+                ))}
               </div>
             </div>
 
+            {/* Email */}
             <div>
-              <label className="text-sm text-slate-300">Email Address</label>
+              <label className="text-sm text-slate-300 ml-1">Email Address</label>
               <input
-                {...register("email", { 
-                  required: "Email is required",
-                })}
+                {...register("email", { required: "Email is required" })}
                 type="email"
                 placeholder="Enter your email"
-                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400"
+                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400 transition"
               />
-              {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+              {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email.message}</p>}
             </div>
 
+            {/* Photo URL */}
             <div>
-              <label className="text-sm text-slate-300">Photo URL</label>
+              <label className="text-sm text-slate-300 ml-1">Photo URL</label>
               <input
                 {...register("photo", { required: "Photo URL is required" })}
                 type="text"
-                placeholder="Type your photo URL"
-                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400"
+                placeholder="Enter image URL"
+                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400 transition"
               />
-              {errors.photo && <p className="text-sm text-red-500 mt-1">{errors.photo.message}</p>}
+              {errors.photo && <p className="text-xs text-red-400 mt-1">{errors.photo.message}</p>}
             </div>
 
+            {/* Password */}
             <div>
-              <label className="text-sm text-slate-300">Password</label>
+              <label className="text-sm text-slate-300 ml-1">Password</label>
               <div className="relative">
                 <input
                   {...register("password", {
@@ -140,38 +138,38 @@ export default function RegisterPage() {
                   })}
                   type={showPassword ? "text" : "password"}
                   placeholder="Create password"
-                  className="w-full mt-2 px-4 py-3 pr-12 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400"
+                  className="w-full mt-2 px-4 py-3 pr-12 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-teal-400 transition"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-[57%] -translate-y-1/2 text-slate-400 hover:text-slate-200 focus:outline-none"
+                  className="absolute right-4 top-[57%] -translate-y-1/2 text-slate-400 hover:text-white transition"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>}
+              {errors.password && <p className="text-xs text-red-400 mt-1">{errors.password.message}</p>}
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 mt-4 rounded-xl bg-teal-500 text-white font-bold hover:bg-teal-600 transition-all shadow-lg shadow-teal-500/20 disabled:opacity-50"
             >
               {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 
           <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-white/10"></div>
-            <span className="text-slate-400 text-sm">OR</span>
-            <div className="flex-1 h-px bg-white/10"></div>
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="text-slate-400 text-xs">OR</span>
+            <div className="flex-1 h-px bg-white/10" />
           </div>
 
           <button 
             type="button"
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 py-3 rounded-xl bg-white text-slate-800 font-semibold hover:bg-slate-100 transition cursor-pointer"
+            className="w-full flex items-center justify-center gap-3 py-3 rounded-xl bg-white text-slate-800 font-semibold hover:bg-slate-50 transition"
           >
             <FaGoogle className="text-red-500" />
             Continue with Google
@@ -179,10 +177,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-slate-300 mt-6 text-sm">
             Already have an account?{" "}
-            <Link
-              href="/login"
-              className="text-teal-400 font-semibold hover:text-teal-300 transition"
-            >
+            <Link href="/login" className="text-teal-400 font-semibold hover:underline">
               Login
             </Link>
           </p>

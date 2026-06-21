@@ -26,10 +26,10 @@ export default function SuccessStories() {
   }, []);
 
   return (
-    <section className="py-24 px-6 bg-white border-t border-slate-100">
+    <section className="py-24 px-6 bg-slate-50">
       <div className="max-w-7xl mx-auto space-y-16">
         <div className="text-center space-y-4">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-teal-600 text-xs font-black uppercase tracking-wider">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-teal-100/50 border border-teal-200 text-teal-700 text-xs font-bold uppercase tracking-wider">
             Patient Testimonials
           </span>
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
@@ -43,11 +43,11 @@ export default function SuccessStories() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="animate-pulse bg-slate-50 border border-slate-100 rounded-3xl h-60"></div>
+              <div key={i} className="animate-pulse bg-white border border-slate-100 rounded-3xl h-60"></div>
             ))}
           </div>
         ) : reviews.length === 0 ? (
-          <div className="text-center py-12 bg-slate-50 rounded-3xl border border-dashed border-slate-200 max-w-md mx-auto">
+          <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200 max-w-md mx-auto">
             <FaQuoteLeft className="text-slate-300 text-4xl mx-auto mb-4" />
             <p className="text-slate-400 italic">No testimonials written by patients yet.</p>
           </div>
@@ -63,7 +63,7 @@ export default function SuccessStories() {
                 <motion.div
                   key={rev._id}
                   whileHover={{ y: -6 }}
-                  className="bg-white border border-slate-100 rounded-3xl p-8 shadow-sm flex flex-col justify-between hover:shadow-lg transition-all duration-300 relative"
+                  className="bg-white border border-slate-100 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 relative"
                 >
                   <span className="absolute top-6 right-8 text-teal-100 text-5xl">
                     <FaQuoteLeft />
@@ -83,10 +83,10 @@ export default function SuccessStories() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-4 border-t border-slate-50 pt-6 mt-6 relative z-10">
+                  <div className="flex items-center gap-4 border-t border-slate-100 pt-6 mt-6 relative z-10">
                     <Avatar className="w-11 h-11 border border-slate-100">
                       <Avatar.Image src={patientImage} alt={patientName} />
-                      <Avatar.Fallback className="bg-slate-500 text-white font-bold">{patientName[0]}</Avatar.Fallback>
+                      <Avatar.Fallback className="bg-slate-200 text-slate-600 font-bold">{patientName[0]}</Avatar.Fallback>
                     </Avatar>
                     <div>
                       <h4 className="text-slate-800 font-extrabold text-sm tracking-wide">{patientName}</h4>
