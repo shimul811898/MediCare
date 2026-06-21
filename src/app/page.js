@@ -2,6 +2,7 @@ import Banner from "./components/Banner";
 import FeaturedDoctors from "./components/FeaturedDoctors";
 import Footer from "./components/Footer";
 import Specializations from "./components/Specializations";
+import SuccessStories from "./components/SuccessStories";
 import WhyChooseUs from "./components/WhyChooseUs ";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
         <WhyChooseUs />
         <FeaturedDoctors />
         <Specializations />
+        <SuccessStories />
       </main>
       <Footer />
     </div>
