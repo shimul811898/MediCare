@@ -89,7 +89,6 @@ export default function ManageSchedulePage() {
         </button>
       </div>
 
-      {/* Add Schedule Form */}
       <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
         <h2 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2"><FaPlus className="text-teal-500 text-sm" /> Add Availability</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
