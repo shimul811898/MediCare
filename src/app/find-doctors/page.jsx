@@ -18,6 +18,31 @@ const SPECIALIZATIONS = [
   "Gynecologist"
 ];
 
+function DoctorImage({ src, name, className }) {
+  const [error, setError] = useState(!src);
+
+  useEffect(() => {
+    setError(!src);
+  }, [src]);
+
+  if (error) {
+    return (
+      <div className={`${className} bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-black text-xl select-none`}>
+        {name?.[0]?.toUpperCase() || 'D'}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={name}
+      className={`${className} object-cover bg-teal-50`}
+      onError={() => setError(true)}
+    />
+  );
+}
+
 export default function FindDoctorsPage() {
   const router = useRouter();
   const { data: session } = authClient.useSession();
@@ -240,12 +265,11 @@ export default function FindDoctorsPage() {
               >
                 <div>
                   <div className="flex gap-4 items-start mb-5">
-                    <Avatar className="w-16 h-16 border-2 border-teal-500/20 shrink-0">
-                      <Avatar.Image src={doctor.image} alt={doctor.name} />
-                      <Avatar.Fallback className="bg-teal-500 text-white font-bold text-lg">
-                        {doctor.name?.[0] || "D"}
-                      </Avatar.Fallback>
-                    </Avatar>
+                    <DoctorImage
+                      src={doctor.image}
+                      name={doctor.name}
+                      className="w-16 h-16 rounded-full border-2 border-teal-500/20 shrink-0"
+                    />
                     <div className="overflow-hidden">
                       <div className="flex items-center gap-1.5">
                         <h3 className="font-bold text-lg text-slate-800 truncate">{doctor.name}</h3>
@@ -329,12 +353,11 @@ export default function FindDoctorsPage() {
 
             <div className="p-6 space-y-6">
               <div className="flex gap-4 items-center bg-slate-50 p-4 rounded-2xl">
-                <Avatar className="w-12 h-12 border border-teal-500/20">
-                  <Avatar.Image src={selectedDoctor.image} alt={selectedDoctor.name} />
-                  <Avatar.Fallback className="bg-teal-500 text-white font-bold">
-                    {selectedDoctor.name?.[0]}
-                  </Avatar.Fallback>
-                </Avatar>
+                <DoctorImage
+                  src={selectedDoctor.image}
+                  name={selectedDoctor.name}
+                  className="w-14 h-14 rounded-full border-2 border-teal-500/30 shrink-0"
+                />
                 <div>
                   <h4 className="font-bold text-slate-800">{selectedDoctor.name}</h4>
                   <p className="text-slate-500 text-xs">{selectedDoctor.specialization} &bull; {selectedDoctor.hospital}</p>

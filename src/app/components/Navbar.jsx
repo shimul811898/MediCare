@@ -95,7 +95,7 @@ const Navbar = () => {
                   <Avatar className="w-9 h-9 border-2 border-teal-500 transition duration-300 group-hover:border-teal-600">
                     <Avatar.Image
                       alt={user?.name || "User"}
-                      src={user?.image}
+                      src={user?.image || undefined}
                       referrerPolicy="no-referrer"
                     />
                     <Avatar.Fallback className="bg-teal-500 text-white font-bold">

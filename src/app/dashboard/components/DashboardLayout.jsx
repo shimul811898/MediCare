@@ -67,7 +67,7 @@ export default function DashboardLayout({ children }) {
         {user && (
           <div className="flex items-center gap-3">
             <Avatar className="w-12 h-12 border-2 border-white/30 shrink-0">
-              <Avatar.Image src={user.image} alt={user.name} />
+              <Avatar.Image src={user.image || undefined} alt={user.name} />
               <Avatar.Fallback className="bg-white/20 text-white font-bold">
                 {user.name?.[0] || "U"}
               </Avatar.Fallback>

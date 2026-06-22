@@ -46,6 +46,20 @@ export default function AdminDoctorsPage() {
     } catch { toast.error("Failed to update verification."); }
   };
 
+  const handleDeleteDoctor = async (userId) => {
+    if (!confirm("Are you sure you want to delete this doctor? This will permanently delete their account, doctor profile, and all their appointments.")) return;
+    try {
+      const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error();
+      toast.success("Doctor deleted successfully!");
+      fetchDoctors();
+    } catch {
+      toast.error("Failed to delete doctor.");
+    }
+  };
+
   if (isPending || !user) return <div className="flex justify-center py-20"><Spinner size="lg" color="teal" /></div>;
 
   const filters = ["all", "verified", "unverified"];
@@ -94,7 +108,7 @@ export default function AdminDoctorsPage() {
                 <span className="font-bold text-slate-800">{doc.fee || 0} BDT</span>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 {doc.verified ? (
                   <span className="flex items-center gap-1.5 text-xs font-black text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full"><FaCheckCircle /> Verified</span>
                 ) : (
@@ -102,6 +116,15 @@ export default function AdminDoctorsPage() {
                 )}
                 <button onClick={() => toggleVerify(doc._id, doc.verified)} className={`px-4 py-1.5 rounded-xl text-xs font-black transition cursor-pointer ${doc.verified ? "bg-rose-50 border border-rose-100 text-rose-600 hover:bg-rose-100" : "bg-teal-500 text-white hover:bg-teal-600"}`}>
                   {doc.verified ? "Unverify" : "Verify"}
+                </button>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  onClick={() => handleDeleteDoctor(doc.userId)}
+                  className="px-4 py-1.5 rounded-xl text-xs font-black bg-rose-50 hover:bg-rose-600 border border-rose-100 text-rose-600 hover:text-white transition cursor-pointer"
+                >
+                  Delete Doctor
                 </button>
               </div>
             </div>

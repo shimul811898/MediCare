@@ -54,6 +54,20 @@ export default function AppointmentRequestsPage() {
     } catch { toast.error("Failed to update status."); }
   };
 
+  const deleteAppointment = async (id) => {
+    if (!confirm("Are you sure you want to delete this appointment request? This action cannot be undone.")) return;
+    try {
+      const res = await fetch(`http://localhost:5000/api/appointments/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error();
+      toast.success("Appointment deleted successfully!");
+      fetchAppointments();
+    } catch {
+      toast.error("Failed to delete appointment.");
+    }
+  };
+
   if (isPending || !user) return <div className="flex justify-center py-20"><Spinner size="lg" color="teal" /></div>;
 
   const filters = ["all", "pending", "approved", "completed", "rejected"];
@@ -139,16 +153,19 @@ export default function AppointmentRequestsPage() {
                       <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase border ${STATUS_STYLES[appt.status] || ""}`}>{appt.status}</span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      {appt.status === "pending" && (
-                        <div className="flex gap-2 justify-end">
-                          <button onClick={() => updateStatus(appt._id, "approved")} className="flex items-center gap-1 px-3 py-1.5 bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold rounded-lg transition cursor-pointer"><FaCheck className="text-[10px]" /> Approve</button>
-                          <button onClick={() => updateStatus(appt._id, "rejected")} className="flex items-center gap-1 px-3 py-1.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold rounded-lg transition cursor-pointer"><FaTimes className="text-[10px]" /> Reject</button>
-                        </div>
-                      )}
-                      {appt.status === "approved" && (
-                        <button onClick={() => updateStatus(appt._id, "completed")} className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition cursor-pointer">Mark Complete</button>
-                      )}
-                      {["completed", "rejected"].includes(appt.status) && <span className="text-slate-400 text-xs italic capitalize">{appt.status}</span>}
+                      <div className="flex gap-2 justify-end items-center">
+                        {appt.status === "pending" && (
+                          <>
+                            <button onClick={() => updateStatus(appt._id, "approved")} className="flex items-center gap-1 px-3 py-1.5 bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold rounded-lg transition cursor-pointer"><FaCheck className="text-[10px]" /> Approve</button>
+                            <button onClick={() => updateStatus(appt._id, "rejected")} className="flex items-center gap-1 px-3 py-1.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold rounded-lg transition cursor-pointer"><FaTimes className="text-[10px]" /> Reject</button>
+                          </>
+                        )}
+                        {appt.status === "approved" && (
+                          <button onClick={() => updateStatus(appt._id, "completed")} className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition cursor-pointer">Mark Complete</button>
+                        )}
+                        {["completed", "rejected"].includes(appt.status) && <span className="text-slate-400 text-xs italic capitalize mr-2">{appt.status}</span>}
+                        <button onClick={() => deleteAppointment(appt._id)} className="px-3 py-1.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-100 text-xs font-bold rounded-lg transition cursor-pointer" title="Delete Appointment">Delete</button>
+                      </div>
                     </td>
                   </tr>
                 ))}

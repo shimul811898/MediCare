@@ -50,7 +50,7 @@ export default function PatientProfilePage() {
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 h-28 relative">
           <div className="absolute -bottom-10 left-8">
             <Avatar className="w-20 h-20 border-4 border-white shadow-lg">
-              <Avatar.Image src={user.image} alt={user.name} />
+              <Avatar.Image src={user.image || undefined} alt={user.name} />
               <Avatar.Fallback className="bg-blue-500 text-white text-2xl font-black">
                 {user.name?.[0] || "P"}
               </Avatar.Fallback>
