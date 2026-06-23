@@ -288,7 +288,7 @@ export default function FindDoctorsPage() {
                   </div>
 
                   {doctor.bio && (
-                    <p className="text-slate-600 text-sm line-clamp-3 mb-4 bg-slate-50 p-3 rounded-xl">
+                    <p className="text-slate-600 text-sm mb-4 bg-slate-50 p-3 rounded-xl overflow-hidden text-ellipsis whitespace-nowrap">
                       {doctor.bio}
                     </p>
                   )}
