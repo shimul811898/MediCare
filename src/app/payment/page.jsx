@@ -35,7 +35,7 @@ function PaymentContent() {
     if (appointmentId) {
       const fetchAppt = async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/appointments/${appointmentId}`);
+          const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/${appointmentId}`);
           if (res.ok) {
             const data = await res.json();
             setAppointment(data);
@@ -62,7 +62,7 @@ function PaymentContent() {
     setPayLoading(true);
     try {
       const generatedTxn = `TXN-STRIPE-${Date.now()}`;
-      const res = await fetch(`http://localhost:5000/api/appointments/${appointmentId}/pay`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/${appointmentId}/pay`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ transactionId: generatedTxn }),
@@ -208,7 +208,7 @@ function PaymentContent() {
           </div>
 
           <form onSubmit={handleStripePayment} className="space-y-5">
-            {/* Card UI Graphic */}
+  
             <div className="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden h-44 flex flex-col justify-between">
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 blur-3xl rounded-full"></div>
               <div className="flex justify-between items-start">

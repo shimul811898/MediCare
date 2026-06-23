@@ -39,7 +39,7 @@ export default function MyAppointmentsPage() {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/appointments/patient/${user.id}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/patient/${user.id}`);
       const data = await res.json();
       setAppointments(data);
     } catch { toast.error("Failed to load appointments."); }
@@ -50,7 +50,7 @@ export default function MyAppointmentsPage() {
     e.preventDefault();
     setReviewLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/reviews", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/reviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

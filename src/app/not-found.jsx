@@ -6,7 +6,7 @@ export default function RootNotFound() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex flex-col items-center justify-center p-6">
       <div className="max-w-md w-full bg-white border border-slate-100 rounded-3xl p-8 md:p-10 shadow-xl text-center space-y-6 animate-in fade-in zoom-in-95 duration-200">
         
-        {/* Animated Error Badge */}
+     
         <div className="w-24 h-24 bg-rose-50 border border-rose-100 rounded-full flex items-center justify-center mx-auto text-4xl shadow-sm animate-pulse">
           🔍
         </div>
@@ -21,7 +21,7 @@ export default function RootNotFound() {
           </p>
         </div>
 
-        {/* Action Buttons */}
+        
         <div className="flex flex-col sm:flex-row gap-3 pt-2">
           <Link
             id="not-found-back-home"

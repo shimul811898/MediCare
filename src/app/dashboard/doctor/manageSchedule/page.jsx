@@ -31,7 +31,7 @@ export default function ManageSchedulePage() {
   const fetchSchedule = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/doctors/${user.id}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/doctors/${user.id}`);
       if (res.ok) {
         const data = await res.json();
         setSchedules(data.schedules || []);
@@ -64,7 +64,7 @@ export default function ManageSchedulePage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await fetch("http://localhost:5000/api/doctors/profile", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/doctors/profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user.id, schedules }),

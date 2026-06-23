@@ -8,7 +8,7 @@ Built with a responsive user interface and secure backend architecture, MediCare
 
 ## 🌍 Live Demo
 
-**Client Side:** 
+Live Link: https://medi-care-mocha.vercel.app
 
 ## 🚀 Project Overview
 

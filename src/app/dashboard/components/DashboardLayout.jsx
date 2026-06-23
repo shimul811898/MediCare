@@ -56,7 +56,7 @@ export default function DashboardLayout({ children }) {
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
-      {/* Brand */}
+   
       <div className={`bg-gradient-to-br ${colors.bg} p-6 text-white`}>
         <Link href="/" className="flex items-center gap-2 mb-6 group">
           <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white/30 transition">
@@ -83,7 +83,7 @@ export default function DashboardLayout({ children }) {
         )}
       </div>
 
-      {/* Nav */}
+
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-3 mb-3">Dashboard Menu</p>
         {navItems.map(({ href, label, icon: Icon }) => {
@@ -106,7 +106,7 @@ export default function DashboardLayout({ children }) {
         })}
       </nav>
 
-      {/* Footer */}
+  
       <div className="p-4 border-t border-slate-100 space-y-2">
         <Link
           href="/"
@@ -128,12 +128,12 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div className="flex min-h-screen bg-slate-50">
-      {/* Desktop Sidebar */}
+
       <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-100 shrink-0 fixed top-0 left-0 h-full z-30 shadow-sm">
         <SidebarContent />
       </aside>
 
-      {/* Mobile overlay */}
+ 
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden"
@@ -141,7 +141,7 @@ export default function DashboardLayout({ children }) {
         />
       )}
 
-      {/* Mobile Sidebar */}
+     
       <aside className={`fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-100 z-50 lg:hidden shadow-xl transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="absolute top-4 right-4">
           <button
@@ -154,9 +154,9 @@ export default function DashboardLayout({ children }) {
         <SidebarContent />
       </aside>
 
-      {/* Main Content */}
+
       <div className="flex-1 lg:ml-64 flex flex-col min-h-screen">
-        {/* Mobile Top Bar */}
+      
         <header className="lg:hidden bg-white border-b border-slate-100 px-4 py-3 flex items-center justify-between sticky top-0 z-20 shadow-sm">
           <button
             onClick={() => setSidebarOpen(true)}

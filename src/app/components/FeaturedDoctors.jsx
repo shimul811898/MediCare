@@ -12,7 +12,7 @@ export default function FeaturedDoctors() {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/doctors");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/doctors`);
         if (res.ok) {
           const data = await res.json();
           setDoctors(data.slice(0, 4));

@@ -26,14 +26,12 @@ export default function MyReviewsPage() {
   const fetchReviews = async () => {
     try {
       setLoading(true);
-      // Fetch all appointments of patient, then filter those with reviews
-      const apptRes = await fetch(`http://localhost:5000/api/appointments/patient/${user.id}`);
+      const apptRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/patient/${user.id}`);
       const appointments = await apptRes.json();
-      // fetch reviews for each doctor of completed appointments
       const doctorIds = [...new Set(appointments.filter(a => a.status === "completed").map(a => a.doctorId))];
       const allReviews = [];
       for (const docId of doctorIds) {
-        const revRes = await fetch(`http://localhost:5000/api/reviews/${docId}`);
+        const revRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/reviews/${docId}`);
         const revData = await revRes.json();
         const myRevs = revData.filter(r => r.patientId === user.id);
         allReviews.push(...myRevs.map(r => ({

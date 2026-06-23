@@ -9,20 +9,17 @@ export default function SuccessStories() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/reviews")
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/reviews`)
       .then((res) => res.json())
       .then((data) => setReviews(data))
       .catch((err) => console.error("Error loading reviews:", err))
       .finally(() => setLoading(false));
   }, []);
 
-  // ইমেজের পাথ ঠিক করার ফাংশন
   const getImageUrl = (image) => {
     if (!image) return null;
-    // যদি ইমেজ লিঙ্কটি পূর্ণাঙ্গ URL হয়
     if (image.startsWith("http")) return image;
-    // যদি লোকাল ফাইল হয় তবে সার্ভার পাথ যুক্ত করবে
-    return `http://localhost:5000/uploads/${image}`;
+    return `${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/${image}`;
   };
 
   if (loading) return <div className="text-center py-24">Loading Success Stories...</div>;
@@ -64,7 +61,6 @@ export default function SuccessStories() {
                   src={getImageUrl(rev.patientImage)}
                   name={rev.patientName || "Anonymous"}
                   className="w-11 h-11 border border-slate-100"
-                  // যদি ইমেজ লোড না হয়, তাহলে নাম থেকে ইনিশিয়াল দেখাবে
                   fallback={rev.patientName?.charAt(0) || "A"}
                 />
                 <div>

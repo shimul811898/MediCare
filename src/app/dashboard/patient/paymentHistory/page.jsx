@@ -26,7 +26,7 @@ export default function PaymentHistoryPage() {
   const fetchPayments = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/appointments/patient/${user.id}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/patient/${user.id}`);
       const data = await res.json();
       setPayments(data.filter(a => a.paymentStatus === "paid"));
     } catch { toast.error("Failed to load payment history."); }

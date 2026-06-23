@@ -30,7 +30,7 @@ export default function PrescriptionsPage() {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/appointments/doctor/${user.id}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/doctor/${user.id}`);
       const data = await res.json();
       const completed = data.filter(a => a.status === "completed");
       setAppointments(completed);
@@ -48,7 +48,7 @@ export default function PrescriptionsPage() {
     }
     setSaving(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/appointments/${apptId}/prescription`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/${apptId}/prescription`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prescription: prescText }),
@@ -154,7 +154,7 @@ export default function PrescriptionsPage() {
                       </span>
                     )}
 
-                    {/* Action Button */}
+               
                     {!isEditing && (
                       <button
                         onClick={() => { setEditingId(appt._id); setPrescText(prescriptions[appt._id] || ""); }}

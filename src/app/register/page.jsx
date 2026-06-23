@@ -58,7 +58,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      {/* Background Blobs */}
+     
       <div className="absolute top-20 left-20 w-72 h-72 bg-teal-500/20 blur-[120px] rounded-full" />
       <div className="absolute bottom-20 right-20 w-72 h-72 bg-cyan-500/20 blur-[120px] rounded-full" />
 
@@ -72,7 +72,7 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Full Name */}
+         
             <div>
               <label className="text-sm text-slate-300 ml-1">Full Name</label>
               <input
@@ -84,7 +84,7 @@ export default function RegisterPage() {
               {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name.message}</p>}
             </div>
 
-            {/* Role Selection */}
+          
             <div>
               <label className="text-sm text-slate-300 block mb-2 ml-1">Register As</label>
               <div className="grid grid-cols-2 gap-4">
@@ -103,7 +103,7 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Email */}
+        
             <div>
               <label className="text-sm text-slate-300 ml-1">Email Address</label>
               <input
@@ -115,7 +115,7 @@ export default function RegisterPage() {
               {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email.message}</p>}
             </div>
 
-            {/* Photo URL */}
+       
             <div>
               <label className="text-sm text-slate-300 ml-1">Photo URL</label>
               <input
@@ -127,7 +127,7 @@ export default function RegisterPage() {
               {errors.photo && <p className="text-xs text-red-400 mt-1">{errors.photo.message}</p>}
             </div>
 
-            {/* Password */}
+           
             <div>
               <label className="text-sm text-slate-300 ml-1">Password</label>
               <div className="relative">

@@ -66,7 +66,7 @@ export default function FindDoctorsPage() {
       const searchQuery = search ? `search=${search}` : "";
       const query = [specQuery, searchQuery].filter(Boolean).join("&");
 
-      const response = await fetch(`http://localhost:5000/api/doctors?${query}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/doctors?${query}`);
       if (!response.ok) throw new Error("Failed to fetch doctors");
       const data = await response.json();
       setDoctors(data);
@@ -117,7 +117,7 @@ export default function FindDoctorsPage() {
     }
     try {
       setBookingLoading(true);
-      const response = await fetch("http://localhost:5000/api/appointments", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

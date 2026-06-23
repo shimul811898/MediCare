@@ -34,7 +34,7 @@ export default function AppointmentRequestsPage() {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/appointments/doctor/${user.id}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/doctor/${user.id}`);
       const data = await res.json();
       setAppointments(data);
     } catch { toast.error("Failed to load appointments."); }
@@ -43,7 +43,7 @@ export default function AppointmentRequestsPage() {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/appointments/${id}/status`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/${id}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
@@ -57,7 +57,7 @@ export default function AppointmentRequestsPage() {
   const deleteAppointment = async (id) => {
     if (!confirm("Are you sure you want to delete this appointment request? This action cannot be undone.")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/appointments/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error();

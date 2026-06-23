@@ -61,7 +61,6 @@ export default function ContactUsPage() {
     }
     setLoading(true);
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       toast.success("Message sent! We'll get back to you shortly.");
       setFormData({ name: "", email: "", subject: "", message: "" });
