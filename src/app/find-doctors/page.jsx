@@ -300,7 +300,7 @@ export default function FindDoctorsPage() {
                     </div>
                     <div className="flex items-center gap-1 text-slate-800 font-bold">
                       <FaDollarSign className="text-slate-400 text-xs -mr-1" />
-                      <span>{doctor.fee ? `${doctor.fee} BDT` : "Not Set"}</span>
+                      <span>{doctor.fee} BDT</span>
                     </div>
                   </div>
 
@@ -359,7 +359,7 @@ export default function FindDoctorsPage() {
                 <div>
                   <h4 className="font-bold text-slate-800">{selectedDoctor.name}</h4>
                   <p className="text-slate-500 text-xs">{selectedDoctor.specialization} &bull; {selectedDoctor.hospital}</p>
-                  <p className="text-teal-600 font-bold text-sm mt-1">{selectedDoctor.fee ? `${selectedDoctor.fee} BDT` : "Not Set"}</p>
+                  <p className="text-teal-600 font-bold text-sm mt-1">{selectedDoctor.fee} BDT</p>
                 </div>
               </div>
 

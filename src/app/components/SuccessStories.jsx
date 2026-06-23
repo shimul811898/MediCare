@@ -9,101 +9,77 @@ export default function SuccessStories() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/reviews");
-        if (res.ok) {
-          const data = await res.json();
-          setReviews(data);
-        }
-      } catch (err) {
-        console.error("Error fetching testimonials:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchReviews();
+    fetch("http://localhost:5000/api/reviews")
+      .then((res) => res.json())
+      .then((data) => setReviews(data))
+      .catch((err) => console.error("Error loading reviews:", err))
+      .finally(() => setLoading(false));
   }, []);
+
+  // ইমেজের পাথ ঠিক করার ফাংশন
+  const getImageUrl = (image) => {
+    if (!image) return null;
+    // যদি ইমেজ লিঙ্কটি পূর্ণাঙ্গ URL হয়
+    if (image.startsWith("http")) return image;
+    // যদি লোকাল ফাইল হয় তবে সার্ভার পাথ যুক্ত করবে
+    return `http://localhost:5000/uploads/${image}`;
+  };
+
+  if (loading) return <div className="text-center py-24">Loading Success Stories...</div>;
 
   return (
     <section className="py-24 px-6 bg-slate-50">
       <div className="max-w-7xl mx-auto space-y-16">
-        <div className="text-center space-y-4">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-teal-100/50 border border-teal-200 text-teal-700 text-xs font-bold uppercase tracking-wider">
-            Patient Testimonials
-          </span>
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
-            Patient Success Stories
-          </h2>
-          <p className="text-slate-500 max-w-xl mx-auto font-medium">
-            Hear from patients who found the right medical treatment and received care through our platform.
-          </p>
+        <div className="text-center">
+          <h2 className="text-4xl font-black text-slate-900">Patient Success Stories</h2>
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="animate-pulse bg-white border border-slate-100 rounded-3xl h-60"></div>
-            ))}
-          </div>
-        ) : reviews.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200 max-w-md mx-auto">
-            <FaQuoteLeft className="text-slate-300 text-4xl mx-auto mb-4" />
-            <p className="text-slate-400 italic">No testimonials written by patients yet.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {reviews.map((rev) => {
-              const patientName = rev.patientName || "Anonymous";
-              const patientImage = rev.patientImage || "";
-              const reviewContent = rev.reviewText || rev.comment || "Great consultation and highly professional service.";
-              const rating = Number(rev.rating) || 5;
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {reviews.map((rev) => (
+            <motion.div
+              key={rev._id}
+              whileHover={{ y: -6 }}
+              className="bg-white border border-slate-100 rounded-3xl p-8 shadow-sm relative"
+            >
+              <span className="absolute top-6 right-8 text-teal-100 text-5xl">
+                <FaQuoteLeft />
+              </span>
 
-              return (
-                <motion.div
-                  key={rev._id}
-                  whileHover={{ y: -6 }}
-                  className="bg-white border border-slate-100 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 relative"
-                >
-                  <span className="absolute top-6 right-8 text-teal-100 text-5xl">
-                    <FaQuoteLeft />
-                  </span>
-
-                  <div className="space-y-4 relative z-10">
-                    <div className="flex gap-1">
-                      {Array.from({ length: 5 }).map((_, idx) => (
-                        <FaStar
-                          key={idx}
-                          className={idx < rating ? "text-amber-400" : "text-slate-200"}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-slate-600 text-sm leading-relaxed italic font-medium">
-                      "{reviewContent}"
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-4 border-t border-slate-100 pt-6 mt-6 relative z-10">
-                    <Avatar
-                      src={patientImage || undefined}
-                      name={patientName}
-                      className="w-11 h-11 border border-slate-100"
+              <div className="space-y-4 relative z-10">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar 
+                      key={i} 
+                      className={i < (rev.rating || 5) ? "text-amber-400" : "text-slate-200"} 
                     />
-                    <div>
-                      <h4 className="text-slate-800 font-extrabold text-sm tracking-wide">{patientName}</h4>
-                      {rev.doctorName && (
-                        <p className="text-slate-400 text-xs font-semibold mt-0.5 flex items-center gap-1">
-                          <FaUserMd className="text-teal-500" />
-                          <span>Consulted Dr. {rev.doctorName}</span>
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        )}
+                  ))}
+                </div>
+                <p className="text-slate-600 text-sm italic">
+                  "{rev.reviewText || rev.comment || "Great experience with the doctor."}"
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4 border-t border-slate-100 pt-6 mt-6 relative z-10">
+                <Avatar
+                  src={getImageUrl(rev.patientImage)}
+                  name={rev.patientName || "Anonymous"}
+                  className="w-11 h-11 border border-slate-100"
+                  // যদি ইমেজ লোড না হয়, তাহলে নাম থেকে ইনিশিয়াল দেখাবে
+                  fallback={rev.patientName?.charAt(0) || "A"}
+                />
+                <div>
+                  <h4 className="text-slate-800 font-extrabold text-sm">
+                    {rev.patientName || "Anonymous"}
+                  </h4>
+                  <p className="text-slate-400 text-xs flex items-center gap-1 mt-0.5">
+                    <FaUserMd className="text-teal-500" />
+                    <span>Consulted Dr. {rev.doctorName || "Doctor"}</span>
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
