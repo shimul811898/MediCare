@@ -84,10 +84,11 @@ export default function SuccessStories() {
                   </div>
 
                   <div className="flex items-center gap-4 border-t border-slate-100 pt-6 mt-6 relative z-10">
-                    <Avatar className="w-11 h-11 border border-slate-100">
-                      <Avatar.Image src={patientImage} alt={patientName} />
-                      <Avatar.Fallback className="bg-slate-200 text-slate-600 font-bold">{patientName[0]}</Avatar.Fallback>
-                    </Avatar>
+                    <Avatar
+                      src={patientImage || undefined}
+                      name={patientName}
+                      className="w-11 h-11 border border-slate-100"
+                    />
                     <div>
                       <h4 className="text-slate-800 font-extrabold text-sm tracking-wide">{patientName}</h4>
                       {rev.doctorName && (

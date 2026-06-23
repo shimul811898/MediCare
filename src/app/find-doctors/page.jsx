@@ -229,11 +229,10 @@ export default function FindDoctorsPage() {
                 <button
                   key={spec}
                   onClick={() => setSpecialization(spec)}
-                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all cursor-pointer border ${
-                    specialization === spec
+                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all cursor-pointer border ${specialization === spec
                       ? "bg-teal-500 border-teal-500 text-white shadow-sm"
                       : "bg-slate-50 border-slate-100 hover:bg-slate-100 text-slate-600"
-                  }`}
+                    }`}
                 >
                   {spec}
                 </button>
@@ -289,11 +288,10 @@ export default function FindDoctorsPage() {
                   </div>
 
                   {doctor.bio && (
-                    <p className="text-slate-600 text-sm line-clamp-2 mb-4 bg-slate-50 p-3 rounded-xl">
+                    <p className="text-slate-600 text-sm line-clamp-3 mb-4 bg-slate-50 p-3 rounded-xl">
                       {doctor.bio}
                     </p>
                   )}
-
                   <div className="flex items-center justify-between border-y border-slate-100 py-3 mb-5 text-sm">
                     <div className="flex items-center gap-1 text-slate-700">
                       <FaStar className="text-amber-500" />
@@ -302,7 +300,7 @@ export default function FindDoctorsPage() {
                     </div>
                     <div className="flex items-center gap-1 text-slate-800 font-bold">
                       <FaDollarSign className="text-slate-400 text-xs -mr-1" />
-                      <span>{doctor.fee} BDT</span>
+                      <span>{doctor.fee ? `${doctor.fee} BDT` : "Not Set"}</span>
                     </div>
                   </div>
 
@@ -361,7 +359,7 @@ export default function FindDoctorsPage() {
                 <div>
                   <h4 className="font-bold text-slate-800">{selectedDoctor.name}</h4>
                   <p className="text-slate-500 text-xs">{selectedDoctor.specialization} &bull; {selectedDoctor.hospital}</p>
-                  <p className="text-teal-600 font-bold text-sm mt-1">{selectedDoctor.fee} BDT</p>
+                  <p className="text-teal-600 font-bold text-sm mt-1">{selectedDoctor.fee ? `${selectedDoctor.fee} BDT` : "Not Set"}</p>
                 </div>
               </div>
 

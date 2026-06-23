@@ -142,7 +142,7 @@ export default function DoctorProfilePage() {
               )}
             </div>
 
-     
+
             <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
               <label className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2 mb-2"><FaHospital className="text-teal-500" /> Hospital / Clinic</label>
               {editing ? (
@@ -154,12 +154,28 @@ export default function DoctorProfilePage() {
             </div>
 
             <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2 mb-2"><FaDollarSign className="text-teal-500" /> Consultation Fee (BDT)</label>
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2 mb-2">
+                <FaDollarSign className="text-teal-500" />
+                Consultation Fee (BDT)
+              </label>
+
               {editing ? (
-                <input type="number" value={profile.fee} placeholder="500" onChange={e => setProfile(p => ({ ...p, fee: Number(e.target.value) }))}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500" />
+                <input
+                  type="number"
+                  value={profile.fee || ""}
+                  placeholder="500"
+                  onChange={(e) =>
+                    setProfile((p) => ({
+                      ...p,
+                      fee: Number(e.target.value),
+                    }))
+                  }
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500"
+                />
               ) : (
-                <p className="text-slate-800 font-semibold text-sm">{profile.fee || 0} BDT</p>
+                <p className="text-slate-800 font-semibold text-sm">
+                  {profile.fee ? `${profile.fee} BDT` : "Not Set"}
+                </p>
               )}
             </div>
           </div>
