@@ -81,6 +81,7 @@ export default function DoctorProfilePage() {
               src={image || undefined}
               name={name}
               className="w-20 h-20 border-4 border-white shadow-lg"
+              imgProps={{ referrerPolicy: "no-referrer" }}
             />
           </div>
         </div>

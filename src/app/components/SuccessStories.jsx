@@ -62,6 +62,7 @@ export default function SuccessStories() {
                   name={rev.patientName || "Anonymous"}
                   className="w-11 h-11 border border-slate-100"
                   fallback={rev.patientName?.charAt(0) || "A"}
+                  imgProps={{ referrerPolicy: "no-referrer" }}
                 />
                 <div>
                   <h4 className="text-slate-800 font-extrabold text-sm">

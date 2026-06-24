@@ -41,7 +41,18 @@ export default function MyAppointmentsPage() {
       setLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments/patient/${user.id}`);
       const data = await res.json();
-      setAppointments(data);
+      
+      try {
+        const revRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/reviews/patient/${user.id}`);
+        const myRevs = await revRes.json();
+        const enriched = data.map(appt => ({
+            ...appt,
+            review: myRevs.find(r => r.appointmentId === (appt._id || appt.id))
+        }));
+        setAppointments(enriched);
+      } catch (err) {
+        setAppointments(data);
+      }
     } catch { toast.error("Failed to load appointments."); }
     finally { setLoading(false); }
   };
@@ -63,11 +74,14 @@ export default function MyAppointmentsPage() {
           comment
         }),
       });
-      if (!res.ok) throw new Error();
-      toast.success("Review submitted!");
-      setReviewModal(null);
+      if (res.ok) {
+        toast.success("Review submitted successfully");
+        setReviewModal(null);
+        fetchAppointments();
+      } else {
+        throw new Error();
+      }
       setComment("");
-      fetchAppointments();
     } catch { toast.error("Failed to submit review."); }
     finally { setReviewLoading(false); }
   };
@@ -138,7 +152,7 @@ export default function MyAppointmentsPage() {
                             ) : (
                               <span className="text-slate-400 text-xs italic">Prescription pending</span>
                             )}
-                            <button onClick={() => { setReviewModal(appt); setRating(5); setComment(""); }} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg transition cursor-pointer">Rate Doctor</button>
+                            <button onClick={() => { setReviewModal(appt); setRating(appt.review?.rating || 5); setComment(appt.review?.comment || ""); }} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg transition cursor-pointer">{appt.review ? 'Update Rating' : 'Rate Doctor'}</button>
                           </>
                         )}
                         {appt.status === "pending" && <span className="text-slate-400 text-xs italic">Waiting approval</span>}
@@ -158,7 +172,7 @@ export default function MyAppointmentsPage() {
           <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden">
             <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-6 text-white flex justify-between items-center">
               <div>
-                <h3 className="font-black text-xl flex items-center gap-2"><FaStar /> Rate Consultation</h3>
+                <h3 className="font-black text-xl flex items-center gap-2"><FaStar /> {reviewModal.review ? 'Update Review' : 'Rate Consultation'}</h3>
                 <p className="text-amber-50 text-sm mt-0.5">With {reviewModal.doctorName}</p>
               </div>
               <button onClick={() => setReviewModal(null)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white text-xl font-bold cursor-pointer">×</button>
@@ -179,7 +193,7 @@ export default function MyAppointmentsPage() {
                 <textarea rows={4} value={comment} onChange={e => setComment(e.target.value)} placeholder="Share your experience..." className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" />
               </div>
               <button type="submit" disabled={reviewLoading} className="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl transition cursor-pointer disabled:opacity-60">
-                {reviewLoading ? "Submitting..." : "Submit Review"}
+                {reviewLoading ? "Submitting..." : (reviewModal.review ? "Update Review" : "Submit Review")}
               </button>
             </form>
           </div>
