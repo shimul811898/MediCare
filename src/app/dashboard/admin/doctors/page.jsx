@@ -27,7 +27,7 @@ export default function AdminDoctorsPage() {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/doctors-all/admin");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/doctors-all/admin`);
       const data = await res.json();
       setDoctors(data);
     } catch { toast.error("Failed to load doctors."); }
@@ -36,7 +36,7 @@ export default function AdminDoctorsPage() {
 
   const toggleVerify = async (id, currentVerified) => {
     try {
-      await fetch(`http://localhost:5000/api/doctors/${id}/verify`, {
+      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/doctors/${id}/verify`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ verified: !currentVerified }),
@@ -49,7 +49,7 @@ export default function AdminDoctorsPage() {
   const handleDeleteDoctor = async (userId) => {
     if (!confirm("Are you sure you want to delete this doctor? This will permanently delete their account, doctor profile, and all their appointments.")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${userId}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error();

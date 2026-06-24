@@ -34,7 +34,7 @@ export default function AdminUsersPage() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/users");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`);
       const data = await res.json();
       setUsers(data);
     } catch { toast.error("Failed to load users."); }
@@ -43,7 +43,7 @@ export default function AdminUsersPage() {
 
   const handleRoleChange = async (id, role) => {
     try {
-      await fetch(`http://localhost:5000/api/users/${id}/role`, {
+      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/${id}/role`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role }),

@@ -26,7 +26,7 @@ export default function AdminAnalyticsPage() {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/admin/stats");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/stats`);
       const data = await res.json();
       setStats(data);
     } catch { toast.error("Failed to load analytics."); }

@@ -26,7 +26,7 @@ export default function AdminPaymentsPage() {
   const fetchPayments = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/appointments");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/appointments`);
       const data = await res.json();
       setAppointments(data.filter(a => a.paymentStatus === "paid"));
     } catch { toast.error("Failed to load payment data."); }
