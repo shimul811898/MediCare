@@ -5,7 +5,7 @@ import { Spinner } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaClock, FaStar, FaCalendarAlt, FaFileMedical } from "react-icons/fa";
+import { FaClock, FaStar, FaStarHalfAlt, FaRegStar, FaCalendarAlt, FaFileMedical } from "react-icons/fa";
 
 const STATUS_STYLES = {
   pending: "bg-amber-50 text-amber-700 border-amber-100",
@@ -180,12 +180,22 @@ export default function MyAppointmentsPage() {
             <form onSubmit={handleReviewSubmit} className="p-6 space-y-5">
               <div>
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Rating</label>
-                <div className="flex gap-2">
-                  {[1, 2, 3, 4, 5].map(s => (
-                    <button key={s} type="button" onClick={() => setRating(s)} className="text-2xl cursor-pointer">
-                      <FaStar className={s <= rating ? "text-amber-400" : "text-slate-200"} />
-                    </button>
-                  ))}
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2">
+                    {[1, 2, 3, 4, 5].map(s => {
+                      if (rating >= s) return <FaStar key={s} className="text-2xl text-amber-400" />;
+                      if (rating >= s - 0.5) return <FaStarHalfAlt key={s} className="text-2xl text-amber-400" />;
+                      return <FaRegStar key={s} className="text-2xl text-slate-200" />;
+                    })}
+                    <span className="text-lg font-bold text-slate-600 ml-2">{rating.toFixed(1)} / 5.0</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="1" max="5" step="0.5" 
+                    value={rating} 
+                    onChange={e => setRating(parseFloat(e.target.value))} 
+                    className="w-full accent-amber-500 cursor-pointer" 
+                  />
                 </div>
               </div>
               <div>

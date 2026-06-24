@@ -77,12 +77,13 @@ export default function DoctorProfilePage() {
       <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="bg-gradient-to-r from-teal-600 to-emerald-700 h-28 relative">
           <div className="absolute -bottom-10 left-8">
-            <Avatar
-              src={image || undefined}
-              name={name}
-              className="w-20 h-20 border-4 border-white shadow-lg"
-              imgProps={{ referrerPolicy: "no-referrer" }}
-            />
+            {image ? (
+              <img src={image} alt="Doctor" referrerPolicy="no-referrer" className="w-20 h-20 rounded-full border-4 border-white shadow-lg object-cover bg-white" />
+            ) : (
+              <div className="w-20 h-20 rounded-full border-4 border-white shadow-lg bg-teal-600 text-white flex items-center justify-center text-3xl font-black">
+                {name?.charAt(0) || "D"}
+              </div>
+            )}
           </div>
         </div>
 

@@ -57,13 +57,13 @@ export default function SuccessStories() {
               </div>
 
               <div className="flex items-center gap-4 border-t border-slate-100 pt-6 mt-6 relative z-10">
-                <Avatar
-                  src={getImageUrl(rev.patientImage)}
-                  name={rev.patientName || "Anonymous"}
-                  className="w-11 h-11 border border-slate-100"
-                  fallback={rev.patientName?.charAt(0) || "A"}
-                  imgProps={{ referrerPolicy: "no-referrer" }}
-                />
+                {getImageUrl(rev.patientImage) ? (
+                  <img src={getImageUrl(rev.patientImage)} alt="Patient" referrerPolicy="no-referrer" className="w-11 h-11 rounded-full border border-slate-100 object-cover shrink-0" />
+                ) : (
+                  <div className="w-11 h-11 rounded-full border border-slate-100 bg-teal-500 text-white flex items-center justify-center font-bold shrink-0">
+                    {rev.patientName?.charAt(0) || "A"}
+                  </div>
+                )}
                 <div>
                   <h4 className="text-slate-800 font-extrabold text-sm">
                     {rev.patientName || "Anonymous"}
