@@ -61,7 +61,7 @@ export default function AdminUsersPage() {
       toast.success("User deleted.");
       fetchUsers();
     } catch { toast.error("Failed to delete user."); }
-    finally { setDeleting(null); }
+    finally { setLoading(false); setDeleting(null); }
   };
 
   if (isPending || !user) return <div className="flex justify-center py-20"><Spinner size="lg" color="teal" /></div>;
@@ -72,19 +72,19 @@ export default function AdminUsersPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 md:p-6 max-w-7xl mx-auto w-full box-border">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">Manage Users</h1>
-          <p className="text-slate-500 text-sm mt-1">{users.length} registered users</p>
+          <h1 className="text-2xl md:text-3xl font-black text-slate-900">Manage Users</h1>
+          <p className="text-slate-500 text-xs md:text-sm mt-1">{users.length} registered users</p>
         </div>
-        <div className="relative">
+        <div className="relative w-full sm:w-64">
           <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search users..." className="pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 w-64" />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search users..." className="pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 w-full" />
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-16"><Spinner size="md" color="teal" /></div>
         ) : filtered.length === 0 ? (
@@ -93,49 +93,86 @@ export default function AdminUsersPage() {
             <p className="text-slate-500 font-semibold">No users found.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
-                  <th className="px-6 py-4">User</th>
-                  <th className="px-6 py-4">Email</th>
-                  <th className="px-6 py-4">Role</th>
-                  <th className="px-6 py-4">Change Role</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50 text-sm">
-                {filtered.map(u => (
-                  <tr key={u._id || u.id} className="hover:bg-slate-50/50 transition">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-black text-sm shrink-0">{u.name?.[0] || "U"}</div>
-                        <span className="font-bold text-slate-800">{u.name || "—"}</span>
+          <>
+            <div className="block lg:hidden divide-y divide-slate-100">
+              {filtered.map(u => (
+                <div key={u._id || u.id} className="p-4 space-y-3 hover:bg-slate-50/50 transition">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-black text-xs shrink-0">{u.name?.[0] || "U"}</div>
+                      <div>
+                        <p className="font-bold text-slate-800 text-sm">{u.name || "—"}</p>
+                        <p className="text-slate-500 text-xs truncate max-w-[180px] sm:max-w-xs">{u.email}</p>
                       </div>
-                    </td>
-                    <td className="px-6 py-4 text-slate-500">{u.email}</td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase border ${ROLE_STYLES[u.role] || "bg-slate-50 text-slate-600 border-slate-200"}`}>{u.role || "patient"}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <select value={u.role || "patient"} onChange={e => handleRoleChange(u._id || u.id, e.target.value)} className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500/20 cursor-pointer">
+                    </div>
+                    
+                    {(u._id || u.id) !== user.id && (
+                      <button onClick={() => handleDelete(u._id || u.id)} disabled={deleting === (u._id || u.id)} className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-500 hover:bg-rose-100 transition cursor-pointer disabled:opacity-60 shrink-0">
+                        <FaTrash className="text-xs" />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-50">
+                    <div>
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-black uppercase border ${ROLE_STYLES[u.role] || "bg-slate-50 text-slate-600 border-slate-200"}`}>{u.role || "patient"}</span>
+                    </div>
+                    <div>
+                      <select value={u.role || "patient"} onChange={e => handleRoleChange(u._id || u.id, e.target.value)} className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500/20 cursor-pointer">
                         <option value="patient">Patient</option>
                         <option value="doctor">Doctor</option>
                         <option value="admin">Admin</option>
                       </select>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      {(u._id || u.id) !== user.id && (
-                        <button onClick={() => handleDelete(u._id || u.id)} disabled={deleting === (u._id || u.id)} className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-500 hover:bg-rose-100 transition cursor-pointer disabled:opacity-60">
-                          <FaTrash className="text-xs" />
-                        </button>
-                      )}
-                    </td>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                    <th className="px-6 py-4">User</th>
+                    <th className="px-6 py-4">Email</th>
+                    <th className="px-6 py-4">Role</th>
+                    <th className="px-6 py-4">Change Role</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-50 text-sm">
+                  {filtered.map(u => (
+                    <tr key={u._id || u.id} className="hover:bg-slate-50/50 transition">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-black text-sm shrink-0">{u.name?.[0] || "U"}</div>
+                          <span className="font-bold text-slate-800">{u.name || "—"}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-slate-500">{u.email}</td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-black uppercase border ${ROLE_STYLES[u.role] || "bg-slate-50 text-slate-600 border-slate-200"}`}>{u.role || "patient"}</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <select value={u.role || "patient"} onChange={e => handleRoleChange(u._id || u.id, e.target.value)} className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500/20 cursor-pointer">
+                          <option value="patient">Patient</option>
+                          <option value="doctor">Doctor</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        {(u._id || u.id) !== user.id && (
+                          <button onClick={() => handleDelete(u._id || u.id)} disabled={deleting === (u._id || u.id)} className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-500 hover:bg-rose-100 transition cursor-pointer disabled:opacity-60">
+                            <FaTrash className="text-xs" />
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>

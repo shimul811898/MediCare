@@ -9,7 +9,7 @@ const Banner = () => {
     };
 
     return (
-        <section className="relative min-h-[85vh] flex items-center bg-gradient-to-br from-[#F4FAF8] via-[#FFFFFF] to-[#E8F5F1] overflow-hidden py-16 px-6 lg:px-16">
+        <section className="relative min-h-[85vh] flex items-center bg-gradient-to-br from-[#F4FAF8] via-[#FFFFFF] to-[#E8F5F1] overflow-hidden py-12 md:py-16 px-4 md:px-6 lg:px-16">
             
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full relative z-10">
                 
@@ -26,7 +26,6 @@ const Banner = () => {
                         </span>
                     </motion.div>
 
-                    {/* Exact Heading & Gradient */}
                     <motion.h1 variants={fadeInUp} className="text-5xl sm:text-6xl font-black text-slate-900 tracking-tight leading-tight">
                         Your Health, <br />
                         <span className="bg-gradient-to-r from-teal-500 to-cyan-600 bg-clip-text text-transparent">
@@ -34,12 +33,10 @@ const Banner = () => {
                         </span>
                     </motion.h1>
 
-                    {/* Description Paragraph */}
                     <motion.p variants={fadeInUp} className="text-slate-600 text-sm sm:text-base max-w-xl font-medium leading-relaxed">
                         Connect with experienced doctors, schedule appointments, manage medical records, and receive quality healthcare — all in one place.
                     </motion.p>
 
-                    {/* Navigation Buttons */}
                     <motion.div variants={fadeInUp} className="flex flex-wrap gap-4 pt-2">
                         <Link href="/find-doctors">
                             <button className="px-7 py-3.5 rounded-xl bg-[#00a884] hover:bg-[#009473] text-white font-bold text-sm shadow-md transition-all duration-200">

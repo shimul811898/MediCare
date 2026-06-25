@@ -27,8 +27,8 @@ export default function MyProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="flex-1 bg-slate-50 py-10 px-6">
-      <div className="max-w-md mx-auto bg-white border border-slate-100 rounded-3xl p-8 shadow-sm">
+    <div className="flex-1 bg-slate-50 py-10 px-4 md:px-6">
+      <div className="max-w-md mx-auto bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 shadow-sm">
         <h1 className="text-3xl font-black text-slate-900 mb-6 text-center">
           My Profile
         </h1>

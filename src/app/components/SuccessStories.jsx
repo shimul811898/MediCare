@@ -25,10 +25,10 @@ export default function SuccessStories() {
   if (loading) return <div className="text-center py-24">Loading Success Stories...</div>;
 
   return (
-    <section className="py-24 px-6 bg-slate-50">
-      <div className="max-w-7xl mx-auto space-y-16">
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-slate-50">
+      <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
         <div className="text-center">
-          <h2 className="text-4xl font-black text-slate-900">Patient Success Stories</h2>
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900">Patient Success Stories</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -13,9 +13,9 @@ const Footer = () => {
       <div className="absolute top-0 left-[-10%] w-96 h-96 bg-teal-100/30 blur-[130px] rounded-full pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-[#00a884]/10 blur-[140px] rounded-full pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16 relative z-10">
         
-        <div className="bg-white/60 backdrop-blur-md border border-slate-200/60 rounded-[32px] p-8 sm:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.015)]">
+        <div className="bg-white/60 backdrop-blur-md border border-slate-200/60 rounded-[32px] p-6 sm:p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.015)]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
             
             <div className="lg:col-span-4 space-y-5">

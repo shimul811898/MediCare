@@ -37,13 +37,13 @@ export default function PlatformStats() {
   ];
 
   return (
-    <section className="py-24 px-6 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto space-y-16">
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
         <div className="text-center space-y-4">
           <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 text-teal-600 text-xs font-bold uppercase tracking-wider">
             Live Platform Metrics
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight">
             MediCare In Numbers
           </h2>
           <p className="text-slate-500 max-w-xl mx-auto font-medium">
@@ -51,7 +51,7 @@ export default function PlatformStats() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {statsItems.map((item, i) => {
             const Icon = item.icon;
             return (

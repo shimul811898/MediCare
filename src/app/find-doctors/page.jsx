@@ -186,13 +186,13 @@ export default function FindDoctorsPage() {
   const availableSlots = bookingDate ? getAvailableSlotsForDate(bookingDate) : [];
 
   return (
-    <div className="flex-1 bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen py-12 px-6">
+    <div className="flex-1 bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen py-10 md:py-12 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-teal-600 text-sm font-semibold mb-4 uppercase tracking-wider">
             Premium Care
           </span>
-          <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
             Search & Book <span className="bg-gradient-to-r from-teal-500 to-cyan-600 bg-clip-text text-transparent">Top Specialists</span>
           </h1>
           <p className="text-slate-500 mt-3 max-w-2xl mx-auto">
@@ -200,7 +200,7 @@ export default function FindDoctorsPage() {
           </p>
         </div>
 
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm mb-10">
+        <div className="bg-white border border-slate-100 rounded-3xl p-4 md:p-6 shadow-sm mb-10">
           <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">

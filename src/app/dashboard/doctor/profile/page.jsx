@@ -87,7 +87,7 @@ export default function DoctorProfilePage() {
           </div>
         </div>
 
-        <div className="pt-14 px-8 pb-8">
+        <div className="pt-14 px-4 sm:px-8 pb-6 sm:pb-8">
           <div className="flex justify-between items-start mb-6">
             <div>
               <h2 className="text-2xl font-black text-slate-900">Dr. {name}</h2>

@@ -53,7 +53,7 @@ export default function AboutUsPage() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-white">
       <main className="flex-1">
-        <section className="relative overflow-hidden py-24 bg-gradient-to-b from-slate-50 to-white border-b border-slate-100 px-6">
+        <section className="relative overflow-hidden py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white border-b border-slate-100 px-4 md:px-6">
           <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-teal-200/20 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 translate-y-12 -translate-x-12 w-96 h-96 bg-indigo-200/20 rounded-full blur-3xl pointer-events-none" />
           
@@ -69,7 +69,7 @@ export default function AboutUsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight leading-none"
+              className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-none"
             >
               Bridging the gap between patients and{" "}
               <span className="bg-gradient-to-r from-teal-500 to-cyan-600 bg-clip-text text-transparent">
@@ -87,8 +87,8 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        <section className="py-16 px-6 max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <section className="py-12 md:py-16 px-4 md:px-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat, i) => (
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
@@ -98,7 +98,7 @@ export default function AboutUsPage() {
                 key={stat.label}
                 className="bg-slate-50/50 rounded-3xl p-6 border border-slate-100 shadow-sm text-center space-y-2 hover:shadow-md hover:border-slate-200 transition-all duration-300"
               >
-                <p className="text-4xl font-black bg-gradient-to-r from-teal-500 to-cyan-600 bg-clip-text text-transparent">{stat.value}</p>
+                <p className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-teal-500 to-cyan-600 bg-clip-text text-transparent">{stat.value}</p>
                 <p className="text-slate-800 font-extrabold text-sm">{stat.label}</p>
                 <p className="text-slate-400 text-xs font-semibold">{stat.desc}</p>
               </motion.div>
@@ -106,7 +106,7 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        <section className="py-20 px-6 bg-slate-50/50 border-t border-b border-slate-100">
+        <section className="py-16 md:py-20 px-4 md:px-6 bg-slate-50/50 border-t border-b border-slate-100">
           <div className="max-w-7xl mx-auto space-y-16">
             <div className="text-center max-w-2xl mx-auto space-y-4">
               <span className="inline-block px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-xs font-black uppercase tracking-wider">
@@ -148,7 +148,7 @@ export default function AboutUsPage() {
         </section>
 
   
-        <section className="py-20 px-6 max-w-7xl mx-auto space-y-16">
+        <section className="py-16 md:py-20 px-4 md:px-6 max-w-7xl mx-auto space-y-12 md:space-y-16">
           <div className="text-center max-w-2xl mx-auto space-y-4">
             <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-teal-600 text-xs font-black uppercase tracking-wider">
               Leadership
@@ -184,7 +184,7 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        <section className="py-16 px-6 max-w-5xl mx-auto">
+        <section className="py-12 md:py-16 px-4 md:px-6 max-w-5xl mx-auto">
           <div className="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-3xl p-8 sm:p-12 text-white text-center space-y-6 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent pointer-events-none" />
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight relative z-10 leading-tight">

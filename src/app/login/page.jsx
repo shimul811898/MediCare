@@ -63,7 +63,7 @@ const LoginPage = () => {
       <div className="absolute bottom-20 right-20 w-72 h-72 bg-cyan-500/20 blur-[120px] rounded-full"></div>
 
       <div className="relative z-10 w-full max-w-md">
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-8 shadow-2xl">
+        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-black text-white">
               Doc<span className="text-teal-400">Appoint</span>

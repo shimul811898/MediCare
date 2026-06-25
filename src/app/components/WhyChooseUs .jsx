@@ -31,13 +31,13 @@ const advantages = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-24 px-6 bg-slate-50 border-t border-slate-100">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-slate-50 border-t border-slate-100">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 md:gap-16">
         <div className="flex-1 space-y-6">
           <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-teal-600 text-xs font-black uppercase tracking-wider">
             Why Choose Us
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight">
             Why Choose <br />
             <span className="bg-gradient-to-r from-teal-500 to-cyan-600 bg-clip-text text-transparent">
               MediCare Connect

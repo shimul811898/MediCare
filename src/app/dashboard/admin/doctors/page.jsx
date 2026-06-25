@@ -66,15 +66,21 @@ export default function AdminDoctorsPage() {
   const filtered = filter === "all" ? doctors : filter === "verified" ? doctors.filter(d => d.verified) : doctors.filter(d => !d.verified);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 sm:px-6 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">Manage Doctors</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Manage Doctors</h1>
           <p className="text-slate-500 text-sm mt-1">{doctors.filter(d => d.verified).length} verified · {doctors.filter(d => !d.verified).length} pending</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
           {filters.map(f => (
-            <button key={f} onClick={() => setFilter(f)} className={`px-4 py-2 rounded-xl text-sm font-bold transition cursor-pointer capitalize ${filter === f ? "bg-teal-500 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}>{f}</button>
+            <button 
+              key={f} 
+              onClick={() => setFilter(f)} 
+              className={`flex-1 sm:flex-initial text-center px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer capitalize ${filter === f ? "bg-teal-500 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+            >
+              {f}
+            </button>
           ))}
         </div>
       </div>
@@ -82,24 +88,24 @@ export default function AdminDoctorsPage() {
       {loading ? (
         <div className="flex justify-center py-16"><Spinner size="md" color="teal" /></div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm text-center py-20">
+        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm text-center py-20 px-4">
           <FaUserMd className="text-5xl text-slate-200 mx-auto mb-4" />
           <p className="text-slate-500 font-semibold">No {filter !== "all" ? filter : ""} doctors found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map(doc => (
-            <div key={doc._id} className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 flex flex-col gap-4">
+            <div key={doc._id} className="bg-white rounded-3xl border border-slate-100 shadow-sm p-4 sm:p-6 flex flex-col gap-4">
               <div className="flex items-start gap-3">
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-white text-lg shrink-0 ${doc.verified ? "bg-gradient-to-br from-teal-500 to-emerald-600" : "bg-gradient-to-br from-slate-400 to-slate-500"}`}>{doc.name?.[0] || "D"}</div>
-                <div className="overflow-hidden">
-                  <h3 className="font-black text-slate-800 truncate">Dr. {doc.name}</h3>
-                  <p className="text-teal-600 font-semibold text-sm">{doc.specialization || "—"}</p>
+                <div className="overflow-hidden w-full">
+                  <h3 className="font-black text-slate-800 truncate text-base sm:text-lg">Dr. {doc.name}</h3>
+                  <p className="text-teal-600 font-semibold text-xs sm:text-sm truncate">{doc.specialization || "—"}</p>
                   <p className="text-slate-500 text-xs truncate">{doc.hospital || "—"}</p>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm border-t border-slate-100 pt-3">
+              <div className="flex items-center justify-between text-xs sm:text-sm border-t border-slate-100 pt-3">
                 <div className="flex items-center gap-1 text-slate-600">
                   <FaStar className="text-amber-500 text-xs" />
                   <span className="font-bold">{doc.averageRating || "—"}</span>
@@ -108,13 +114,16 @@ export default function AdminDoctorsPage() {
                 <span className="font-bold text-slate-800">{doc.fee || 0} BDT</span>
               </div>
 
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3 gap-2">
                 {doc.verified ? (
-                  <span className="flex items-center gap-1.5 text-xs font-black text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full"><FaCheckCircle /> Verified</span>
+                  <span className="flex items-center gap-1.5 text-[11px] sm:text-xs font-black text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full shrink-0"><FaCheckCircle /> Verified</span>
                 ) : (
-                  <span className="flex items-center gap-1.5 text-xs font-black text-slate-500 bg-slate-50 border border-slate-200 px-3 py-1 rounded-full"><FaTimesCircle /> Unverified</span>
+                  <span className="flex items-center gap-1.5 text-[11px] sm:text-xs font-black text-slate-500 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full shrink-0"><FaTimesCircle /> Unverified</span>
                 )}
-                <button onClick={() => toggleVerify(doc._id, doc.verified)} className={`px-4 py-1.5 rounded-xl text-xs font-black transition cursor-pointer ${doc.verified ? "bg-rose-50 border border-rose-100 text-rose-600 hover:bg-rose-100" : "bg-teal-500 text-white hover:bg-teal-600"}`}>
+                <button 
+                  onClick={() => toggleVerify(doc._id, doc.verified)} 
+                  className={`px-3 sm:px-4 py-1.5 rounded-xl text-[11px] sm:text-xs font-black transition cursor-pointer truncate ${doc.verified ? "bg-rose-50 border border-rose-100 text-rose-600 hover:bg-rose-100" : "bg-teal-500 text-white hover:bg-teal-600"}`}
+                >
                   {doc.verified ? "Unverify" : "Verify"}
                 </button>
               </div>
@@ -122,7 +131,7 @@ export default function AdminDoctorsPage() {
               <div className="flex justify-end">
                 <button
                   onClick={() => handleDeleteDoctor(doc.userId)}
-                  className="px-4 py-1.5 rounded-xl text-xs font-black bg-rose-50 hover:bg-rose-600 border border-rose-100 text-rose-600 hover:text-white transition cursor-pointer"
+                  className="w-full sm:w-auto text-center px-4 py-1.5 rounded-xl text-[11px] sm:text-xs font-black bg-rose-50 hover:bg-rose-600 border border-rose-100 text-rose-600 hover:text-white transition cursor-pointer"
                 >
                   Delete Doctor
                 </button>

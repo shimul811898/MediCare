@@ -27,17 +27,17 @@ export default function FeaturedDoctors() {
   }, []);
 
   return (
-    <section className="py-24 px-6 bg-white">
-      <div className="max-w-7xl mx-auto space-y-16">
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-white">
+      <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
         <div className="flex flex-col md:flex-row items-end justify-between gap-6">
           <div className="space-y-4">
             <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-teal-600 text-xs font-black uppercase tracking-wider">
               Meet Our Specialists
             </span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight">
               Featured Doctors
             </h2>
-            <p className="text-slate-500 max-w-xl font-medium">
+            <p className="text-slate-500 max-w-xl font-medium text-sm md:text-base">
               Consult with verified, top-tier clinical professionals directly online or schedule a physical clinic visit.
             </p>
           </div>
@@ -49,7 +49,7 @@ export default function FeaturedDoctors() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="animate-pulse bg-slate-50 border border-slate-100 rounded-3xl h-96"></div>
             ))}
@@ -60,7 +60,7 @@ export default function FeaturedDoctors() {
             <p className="text-slate-400 italic">No verified doctors registered yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {doctors.map((doc) => {
               const docName = doc.doctorName || doc.name || "Doctor";
               const docImage = doc.profileImage || doc.image;

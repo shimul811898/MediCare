@@ -12,13 +12,13 @@ const specializations = [
 
 export default function Specializations() {
   return (
-    <section className="py-20 px-6 bg-slate-50 border-y border-slate-100/50">
+    <section className="py-16 md:py-20 px-4 md:px-6 bg-slate-50 border-y border-slate-100/50">
       <div className="max-w-7xl mx-auto space-y-12">
         <div className="text-center space-y-4">
           <span className="inline-block px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-teal-600 text-xs font-black uppercase tracking-wider">
             Our Departments
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight">
             Medical Specializations
           </h2>
           <p className="text-slate-500 max-w-2xl mx-auto font-medium">
@@ -26,7 +26,7 @@ export default function Specializations() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {specializations.map((spec, i) => {
             const Icon = spec.icon;
             return (

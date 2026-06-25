@@ -109,7 +109,7 @@ function PaymentContent() {
 
   if (success) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50 py-12 px-6">
+      <div className="flex items-center justify-center min-h-screen bg-slate-50 py-8 md:py-12 px-4 md:px-6">
         <div className="bg-white border border-slate-100 rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-6">
           <div className="w-20 h-20 rounded-full bg-emerald-50 text-emerald-500 border border-emerald-100 flex items-center justify-center text-4xl mx-auto">
             <FaCheckCircle />
@@ -146,7 +146,7 @@ function PaymentContent() {
   }
 
   return (
-    <div className="flex-1 bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen py-16 px-6">
+    <div className="flex-1 bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen py-10 md:py-16 px-4 md:px-6">
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <div className="lg:col-span-5 bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-6">
@@ -196,7 +196,7 @@ function PaymentContent() {
         </div>
 
         
-        <div className="lg:col-span-7 bg-white border border-slate-100 rounded-3xl p-8 shadow-sm space-y-6">
+        <div className="lg:col-span-7 bg-white border border-slate-100 rounded-3xl p-5 sm:p-8 shadow-sm space-y-6">
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-2xl font-black text-slate-900">Secure Payment</h2>

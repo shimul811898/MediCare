@@ -75,7 +75,7 @@ export default function ContactUsPage() {
     <div className="min-h-screen flex flex-col justify-between bg-white">
       <main className="flex-1">
   
-        <section className="relative overflow-hidden py-20 bg-gradient-to-b from-slate-50 to-white border-b border-slate-100 px-6">
+        <section className="relative overflow-hidden py-16 md:py-20 bg-gradient-to-b from-slate-50 to-white border-b border-slate-100 px-4 md:px-6">
           <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-teal-200/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 translate-y-12 -translate-x-12 w-96 h-96 bg-indigo-200/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -91,7 +91,7 @@ export default function ContactUsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-none"
+              className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-none"
             >
               We are here to{" "}
               <span className="bg-gradient-to-r from-teal-500 to-cyan-600 bg-clip-text text-transparent">
@@ -109,7 +109,7 @@ export default function ContactUsPage() {
           </div>
         </section>
 
-        <section className="py-16 px-6 max-w-7xl mx-auto">
+        <section className="py-12 md:py-16 px-4 md:px-6 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
        
             <div className="lg:col-span-5 space-y-6">
@@ -207,7 +207,7 @@ export default function ContactUsPage() {
         </section>
 
   
-        <section className="py-16 px-6 bg-slate-50/50 border-t border-slate-100">
+        <section className="py-12 md:py-16 px-4 md:px-6 bg-slate-50/50 border-t border-slate-100">
           <div className="max-w-4xl mx-auto space-y-12">
             <div className="text-center space-y-3">
               <span className="inline-block px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-xs font-black uppercase tracking-wider">
