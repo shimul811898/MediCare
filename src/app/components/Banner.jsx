@@ -10,10 +10,10 @@ const Banner = () => {
 
     return (
         <section className="relative min-h-[85vh] flex items-center bg-gradient-to-br from-[#F4FAF8] via-[#FFFFFF] to-[#E8F5F1] overflow-hidden py-12 md:py-16 px-4 md:px-6 lg:px-16">
-            
+
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full relative z-10">
-                
-                <motion.div 
+
+                <motion.div
                     className="lg:col-span-6 space-y-6 text-left"
                     initial="hidden"
                     animate="visible"
@@ -66,17 +66,17 @@ const Banner = () => {
 
                 <div className="lg:col-span-6 relative w-full flex justify-center items-center mt-12 lg:mt-0">
                     <div className="relative w-full max-w-[520px]">
-                        
-                        <motion.img 
+
+                        <motion.img
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.7 }}
-                            src="/assests/banner.png" 
+                            src="/assests/banner.png"
                             alt="Healthcare Professional Team"
                             className="w-full h-auto object-contain relative z-10 mx-auto"
                         />
 
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: 30 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.3, duration: 0.5 }}
@@ -88,7 +88,7 @@ const Banner = () => {
                             <p className="text-slate-400 text-[11px] font-semibold mt-0.5 whitespace-nowrap">Patient Rating</p>
                         </motion.div>
 
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
@@ -99,7 +99,7 @@ const Banner = () => {
                         </motion.div>
 
                         {/* Bottom Info Row */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5, duration: 0.6 }}
