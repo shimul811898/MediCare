@@ -71,7 +71,7 @@ const Banner = () => {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.7 }}
-                            src="/assets/banner.png" 
+                            src="/assests/banner.png" 
                             alt="Healthcare Professional Team"
                             className="w-full h-auto object-contain relative z-10 mx-auto"
                         />
@@ -98,6 +98,7 @@ const Banner = () => {
                             <p className="text-slate-400 text-[11px] font-semibold mt-0.5">Specialists</p>
                         </motion.div>
 
+                        {/* Bottom Info Row */}
                         <motion.div 
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
